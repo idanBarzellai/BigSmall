@@ -27,6 +27,7 @@ The MVP focuses on clean separation between player controllers, race flow, and i
 - Converts raw keys into movement, jump, and interaction intents.
 
 2. Player control layer
+- SharedKeyboardInputRouter reads keyboard state for both players.
 - ElephantController handles surface movement, jumping, and stomp triggers.
 - MouseController handles tunnel movement and mouse-hole triggers.
 
@@ -48,6 +49,7 @@ The MVP focuses on clean separation between player controllers, race flow, and i
 
 | Script | Responsibility | Key Dependencies |
 | --- | --- | --- |
+| SharedKeyboardInputRouter | Reads shared keyboard input and exposes Elephant/Mouse intents | Unity InputSystem |
 | RaceManager | Round lifecycle, score, winner detection, level progression | ElephantController, MouseController, UI |
 | ElephantController | Surface movement, jump, stomp detection, finish-line state | Input, StompPoint |
 | MouseController | Underground movement, maze navigation, mouse-hole detection, finish-line state | Input, MouseHole |
