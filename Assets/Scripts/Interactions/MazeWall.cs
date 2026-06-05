@@ -1,7 +1,5 @@
 using UnityEngine;
 
-namespace ElephantVsMouse.Gameplay.Interactions
-{
     public sealed class MazeWallController : MonoBehaviour
     {
         private static readonly System.Collections.Generic.List<MazeWallController> RegisteredWalls = new System.Collections.Generic.List<MazeWallController>();
@@ -46,4 +44,3 @@ namespace ElephantVsMouse.Gameplay.Interactions
             }
         }
     }
-}

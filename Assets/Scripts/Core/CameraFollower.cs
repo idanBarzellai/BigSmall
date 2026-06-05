@@ -1,9 +1,6 @@
-using ElephantVsMouse.Gameplay.Core;
-using ElephantVsMouse.Gameplay.Players;
 using UnityEngine;
 
-namespace ElephantVsMouse.Gameplay.Core
-{
+
     public sealed class CameraFollower : MonoBehaviour
     {
         public Transform elephantTransform;
@@ -85,8 +82,8 @@ namespace ElephantVsMouse.Gameplay.Core
                     mouseController = mouseTransform.GetComponent<MouseController>();
                 }
 
-                if (elephantController != null) elephantController.SetInputEnabled(false);
-                if (mouseController != null) mouseController.SetInputEnabled(false);
+                // if (elephantController != null) elephantController.SetInputEnabled(false);
+                // if (mouseController != null) mouseController.SetInputEnabled(false);
             }
         }
 
@@ -105,4 +102,3 @@ namespace ElephantVsMouse.Gameplay.Core
             }
         }
     }
-}

@@ -1,8 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace ElephantVsMouse.Gameplay.Interactions
-{
+
     public sealed class BirdAttackActor : MonoBehaviour
     {
         public Transform targetElephant;
@@ -81,7 +80,6 @@ namespace ElephantVsMouse.Gameplay.Interactions
             cc.radius = 0.15f;
             cc.isTrigger = false;
 
-            egg.AddComponent<EggBehaviour>().coverDuration = coverDuration;
+            // egg.AddComponent<EggBehaviour>().coverDuration = coverDuration;
         }
     }
-}
