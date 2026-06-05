@@ -2,6 +2,42 @@ README - Game Concept
 Elephant vs Mouse
 Overview
 
+Current prototype update
+
+The project now boots a visible test match automatically when you press Play.
+
+What was added:
+
+- A runtime bootstrap that creates the match systems if the scene is empty.
+- Cube-shaped placeholder characters for the Elephant and the Mouse.
+- Automatic match start so input works immediately without manual scene setup.
+- A camera reset to full-screen view so both placeholders stay visible in the editor.
+
+This is still a prototype layer, not the final art or final scene setup.
+
+Prototype gameplay changes (runtime)
+
+- Single shared camera: the scene is no longer split-screen. The Elephant occupies the top half while the Mouse occupies the bottom half.
+- Camera follow: the camera follows the player who is further along the race (higher X). The camera smoothly follows the leader's X position while keeping the vertical framing so the top/bottom layout remains visible.
+- Lose condition: if a trailing player falls too far behind and leaves the visible camera bounds (there is a small safety buffer so touching the edge won't immediately cause a loss), the trailing player loses the round.
+- Size and movement:
+	- The Elephant is three times the size of the Mouse (prototype cubes).
+	- The Mouse can move in all directions but cannot jump.
+	- The Elephant can move left/right and jump only.
+
+Actions for both players (stomp, mouse-hole effects) are TODO and will be implemented later.
+
+	Level layout update
+
+	- The central ground/platform is now much longer so the race has more horizontal room.
+	- The Mouse area now uses a smaller maze-like path made from tighter wall segments and corridor markers only below the platform.
+	- The Elephant lane stays open above the ground so it can keep moving forward and jumping over obstacles.
+
+	Match end update
+
+	- When the match is won, a full-screen win screen appears.
+	- The screen counts down and then rebuilds the runtime race layout automatically.
+
 Elephant vs Mouse is a local 2-player competitive couch co-op racing game built in Unity.
 
 Two players race simultaneously toward the finish line, but each character experiences a completely different path and gameplay style.
