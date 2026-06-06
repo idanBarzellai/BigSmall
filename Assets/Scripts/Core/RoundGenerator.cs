@@ -6,7 +6,7 @@ public sealed class RoundGenerator : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject groundPrefab;
     [SerializeField] private GameObject obstaclePrefab;
-    [SerializeField] private GameObject interactionPointPrefab;
+    [SerializeField] private GameObject interactionAccessPointPrefab;
     [SerializeField] private GameObject mazeWallPrefab;
     [SerializeField] private GameObject finishLinePrefab;
 
@@ -19,7 +19,7 @@ public sealed class RoundGenerator : MonoBehaviour
     [Header("Generation")]
     [SerializeField] private int obstacleCount = 7;
     [SerializeField] private int interactionPointCount = 5;
-    [SerializeField] private int mazeWallCount = 18;
+    [SerializeField] private int mazeWallCount = 20;
 
     private readonly List<GameObject> spawnedObjects = new();
 
@@ -32,7 +32,7 @@ public sealed class RoundGenerator : MonoBehaviour
         GenerateGround();
         GenerateFinishLine();
         GenerateElephantObstacles();
-        GenerateInteractionPoints();
+        GenerateInteractionPairs();
         GenerateMouseMazeWalls();
     }
 
@@ -49,30 +49,16 @@ public sealed class RoundGenerator : MonoBehaviour
 
     private void GenerateGround()
     {
-        GameObject ground = Spawn(
-            groundPrefab,
-            new Vector3(trackLength * 0.5f, 0f, 0f),
-            new Vector3(trackLength, 1f, 1f)
-        );
-
-        ground.name = "Ground";
+        Spawn(groundPrefab, new Vector3(trackLength * 0.5f, 0f, 0f), new Vector3(trackLength, 1f, 1f));
     }
 
     private void GenerateFinishLine()
     {
-        GameObject finish = Spawn(
-            finishLinePrefab,
-            new Vector3(trackLength, 0f, 0f),
-            new Vector3(0.3f, 8f, 1f)
-        );
-
-        finish.name = "FinishLine";
+        GameObject finish = Spawn(finishLinePrefab, new Vector3(trackLength, 0f, 0f), new Vector3(0.3f, 8f, 1f));
 
         FinishLine finishLine = finish.GetComponent<FinishLine>();
         if (finishLine != null)
-        {
             finishLine.SetRaceManager(raceManager);
-        }
     }
 
     private void GenerateElephantObstacles()
@@ -81,17 +67,11 @@ public sealed class RoundGenerator : MonoBehaviour
         {
             float x = Random.Range(8f, trackLength - 8f);
 
-            GameObject obstacle = Spawn(
-                obstaclePrefab,
-                new Vector3(x, 1.15f, 0f),
-                new Vector3(0.8f, 0.8f, 1f)
-            );
-
-            obstacle.name = $"ElephantObstacle_{i}";
+            Spawn(obstaclePrefab, new Vector3(x, 1.15f, 0f), new Vector3(0.8f, 0.8f, 1f));
         }
     }
 
-    private void GenerateInteractionPoints()
+    private void GenerateInteractionPairs()
     {
         Color[] colors =
         {
@@ -105,18 +85,38 @@ public sealed class RoundGenerator : MonoBehaviour
         for (int i = 0; i < interactionPointCount; i++)
         {
             float x = Random.Range(10f, trackLength - 10f);
+            Color color = colors[i % colors.Length];
 
-            GameObject point = Spawn(
-                interactionPointPrefab,
+            GameObject controllerObject = new GameObject($"SharedInteraction_{i}");
+            controllerObject.transform.SetParent(transform, false);
+
+            SharedInteractionController controller =
+                controllerObject.AddComponent<SharedInteractionController>();
+
+            spawnedObjects.Add(controllerObject);
+
+            GameObject elephantPointObject = Spawn(
+                interactionAccessPointPrefab,
                 new Vector3(x, 0.85f, 0f),
                 Vector3.one * 0.55f
             );
 
-            point.name = $"InteractionPoint_{i}";
+            GameObject mousePointObject = Spawn(
+                interactionAccessPointPrefab,
+                new Vector3(x, -1f, 0f),
+                Vector3.one * 0.45f
+            );
 
-            SpriteRenderer sr = point.GetComponent<SpriteRenderer>();
-            if (sr != null)
-                sr.color = colors[i % colors.Length];
+            InteractionAccessPoint elephantPoint =
+                elephantPointObject.GetComponent<InteractionAccessPoint>();
+
+            InteractionAccessPoint mousePoint =
+                mousePointObject.GetComponent<InteractionAccessPoint>();
+
+            elephantPoint.Initialize(PlayerId.Elephant, controller, color);
+            mousePoint.Initialize(PlayerId.Mouse, controller, color);
+
+            controller.Initialize(elephantPoint, mousePoint);
         }
     }
 
@@ -125,16 +125,14 @@ public sealed class RoundGenerator : MonoBehaviour
         for (int i = 0; i < mazeWallCount; i++)
         {
             float x = Random.Range(5f, trackLength - 5f);
-            float y = Random.Range(-3.4f, -1.2f);
+            float y = Random.Range(-3.4f, -1.3f);
             float height = Random.Range(0.8f, 2.2f);
 
-            GameObject wall = Spawn(
+            Spawn(
                 mazeWallPrefab,
                 new Vector3(x, y, 0f),
                 new Vector3(0.35f, height, 1f)
             );
-
-            wall.name = $"MouseMazeWall_{i}";
         }
     }
 

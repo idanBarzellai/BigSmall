@@ -7,7 +7,7 @@ public sealed class GameManager : MonoBehaviour
     [SerializeField] private ElephantController elephant;
     [SerializeField] private MouseController mouse;
     [SerializeField] private CameraFollower cameraFollower;
-
+[SerializeField] private RoundGenerator roundGenerator;
     private void Awake()
     {
         raceManager.RoundEnded += HandleRoundEnded;
