@@ -21,7 +21,6 @@ public sealed class ElephantController : MonoBehaviour
     private Rigidbody2D rb;
     private bool canMove = true;
     private float currentMoveSpeed;
-    private float lastJumpTime = -999f;
     private bool wasGrounded;
 private float nextAllowedJumpTime;
 

@@ -27,20 +27,54 @@ public sealed class InteractionAccessPoint : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other)
+{
+    if (consumed || controller == null || controller.IsUsed)
+        return;
+
+    if (allowedPlayer == PlayerId.Elephant)
     {
-        if (consumed || controller == null || controller.IsUsed)
-            return;
-
-        bool validActivation =
-            allowedPlayer == PlayerId.Elephant
-                ? other.GetComponent<ElephantController>() != null
-                : other.GetComponent<MouseController>() != null;
-
-        if (!validActivation)
-            return;
-
-        controller.Activate(allowedPlayer);
+        TryActivateByElephant(other);
+        return;
     }
+
+    if (allowedPlayer == PlayerId.Mouse)
+    {
+        TryActivateByMouse(other);
+    }
+}
+
+private void TryActivateByElephant(Collider2D other)
+{
+    ElephantController elephant = other.GetComponent<ElephantController>();
+
+    if (elephant == null)
+        return;
+
+    Rigidbody2D rb = other.attachedRigidbody;
+
+    if (rb == null)
+        return;
+
+    bool isFallingFastEnough = rb.linearVelocity.y < -0.5f;
+    bool isClearlyAbovePoint = other.bounds.min.y > transform.position.y;
+
+    if (!isFallingFastEnough || !isClearlyAbovePoint)
+        return;
+
+    elephant.ResetMomentum();
+
+    controller.Activate(PlayerId.Elephant);
+}
+
+private void TryActivateByMouse(Collider2D other)
+{
+    MouseController mouse = other.GetComponent<MouseController>();
+
+    if (mouse == null)
+        return;
+
+    controller.Activate(PlayerId.Mouse);
+}
 
     public void Consume()
     {

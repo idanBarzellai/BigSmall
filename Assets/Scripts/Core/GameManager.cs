@@ -4,10 +4,15 @@ public sealed class GameManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private RaceManager raceManager;
+    [SerializeField] private RoundGenerator roundGenerator;
     [SerializeField] private ElephantController elephant;
     [SerializeField] private MouseController mouse;
     [SerializeField] private CameraFollower cameraFollower;
-[SerializeField] private RoundGenerator roundGenerator;
+
+    [Header("Spawn Positions")]
+    [SerializeField] private Vector3 elephantStartPosition = new Vector3(0f, 2f, 0f);
+    [SerializeField] private Vector3 mouseStartPosition = new Vector3(0f, -2f, 0f);
+
     private void Awake()
     {
         raceManager.RoundEnded += HandleRoundEnded;
@@ -16,13 +21,32 @@ public sealed class GameManager : MonoBehaviour
 
     private void Start()
     {
-        raceManager.StartNewMatch();
+        StartNewMatch();
     }
 
     private void OnDestroy()
     {
         raceManager.RoundEnded -= HandleRoundEnded;
         raceManager.MatchEnded -= HandleMatchEnded;
+    }
+
+    private void StartNewMatch()
+    {
+        GenerateAndStartRound();
+        raceManager.StartNewMatch();
+    }
+
+    private void GenerateAndStartRound()
+    {
+        roundGenerator.GenerateRound();
+
+        elephant.transform.position = elephantStartPosition;
+        mouse.transform.position = mouseStartPosition;
+
+        elephant.SetCanMove(true);
+        mouse.SetCanMove(true);
+
+        cameraFollower.ResetForNewRound();
     }
 
     private void HandleRoundEnded(PlayerId winner)
@@ -32,7 +56,6 @@ public sealed class GameManager : MonoBehaviour
         elephant.SetCanMove(false);
         mouse.SetCanMove(false);
 
-        // temporary restart
         Invoke(nameof(StartNextRound), 2f);
     }
 
@@ -46,16 +69,7 @@ public sealed class GameManager : MonoBehaviour
 
     private void StartNextRound()
     {
-        // temporary reset positions
-
-        elephant.transform.position = new Vector3(0f, 2f, 0f);
-        mouse.transform.position = new Vector3(0f, -2f, 0f);
-
-        elephant.SetCanMove(true);
-        mouse.SetCanMove(true);
-
-        cameraFollower.ResetForNewRound();
-
+        GenerateAndStartRound();
         raceManager.StartNewRound();
     }
 }

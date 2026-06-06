@@ -189,7 +189,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   minMoveSpeed: 2
   maxMoveSpeed: 10
   accelerationRate: 1.5
-  jumpForce: 6
+  jumpForce: 9
   jumpCooldown: 0.9
   groundCheck: {fileID: 866451071}
   groundCheckRadius: 0.15
@@ -304,7 +304,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.07, y: 2.42, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7072, y: 1.7072, z: 1.7072}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 866451071}
@@ -500,6 +500,8 @@ MonoBehaviour:
   interactionAccessPointPrefab: {fileID: 6118158591806393863, guid: 8ef96d76f39ae084fbbf8b509ec1950d, type: 3}
   mazeWallPrefab: {fileID: 7354225502215736107, guid: c9bf72579e419e24fb11fed5f1b1e9d3, type: 3}
   finishLinePrefab: {fileID: 4016434665711424873, guid: 92767196081f0c549920174bf229c224, type: 3}
+  mouseConnectorPrefab: {fileID: 4927187283108857601, guid: 36f2d49c555fe594881f1fa662b8fa93, type: 3}
+  mouseMazeBoundaryPrefab: {fileID: 9017325889041225302, guid: aaedb206b3a96744086f921a67b017bf, type: 3}
   raceManager: {fileID: 777200355}
   trackLength: 80
   obstacleCount: 7
@@ -610,10 +612,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   raceManager: {fileID: 777200355}
+  roundGenerator: {fileID: 772806740}
   elephant: {fileID: 430608963}
   mouse: {fileID: 1434177746}
   cameraFollower: {fileID: 693823823}
-  roundGenerator: {fileID: 772806740}
+  elephantStartPosition: {x: 0, y: 2, z: 0}
+  mouseStartPosition: {x: 0, y: -2, z: 0}
 --- !u!1 &866451070
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,7 +767,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.08, y: -2.48, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3613, y: 0.3613, z: 0.3613}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -818,7 +822,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.9968645, b: 0.7311321, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
