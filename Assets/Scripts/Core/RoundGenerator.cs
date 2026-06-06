@@ -7,6 +7,9 @@ public sealed class RoundGenerator : MonoBehaviour
     [SerializeField] private GameObject groundPrefab;
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private GameObject interactionAccessPointPrefab;
+    [SerializeField] private GameObject birdAttackPrefab;
+[SerializeField] private ElephantController elephant;
+[SerializeField] private ScreenObscurer screenObscurer;
     [SerializeField] private GameObject mazeWallPrefab;
     [SerializeField] private GameObject finishLinePrefab;
     [SerializeField] private GameObject mouseConnectorPrefab;
@@ -121,6 +124,12 @@ public sealed class RoundGenerator : MonoBehaviour
         SharedInteractionController controller =
             controllerObject.AddComponent<SharedInteractionController>();
 
+            controller.SetupReferences(
+    birdAttackPrefab,
+    elephant.transform,
+    screenObscurer
+);
+
         spawnedObjects.Add(controllerObject);
 
         GameObject elephantPointObject = Spawn(
@@ -166,20 +175,16 @@ generatedConnectors.Clear();
         float segmentStartX = segment * segmentLength;
         float segmentCenterX = segmentStartX + segmentLength * 0.5f;
 
-        int blockedLane = Random.Range(0, 3);
+        int firstBlockedLane = Random.Range(0, 3);
+int secondBlockedLane = Random.Range(0, 3);
 
-        for (int lane = 0; lane < 3; lane++)
-        {
-            if (lane == blockedLane)
-            {
-                GameObject wall = Spawn(
-                    mazeWallPrefab,
-                    new Vector3(segmentCenterX, laneY[lane], 0f),
-new Vector3(segmentLength * 0.55f, 0.45f, 1f)                );
+while (secondBlockedLane == firstBlockedLane)
+{
+    secondBlockedLane = Random.Range(0, 3);
+}
 
-                wall.name = $"MazeWall_S{segment}_L{lane}";
-            }
-        }
+CreateMazeWall(segment, firstBlockedLane, segmentCenterX, segmentLength, laneY);
+CreateMazeWall(segment, secondBlockedLane, segmentCenterX, segmentLength, laneY);
 
         if (segment < segmentCount - 1)
         {
@@ -204,47 +209,64 @@ new Vector3(0.4f, 1f, 1f)                );
         }
     }
 }
+
+private void CreateMazeWall(
+    int segment,
+    int lane,
+    float segmentCenterX,
+    float segmentLength,
+    float[] laneY)
+{
+    GameObject wall = Spawn(
+        mazeWallPrefab,
+        new Vector3(segmentCenterX, laneY[lane], 0f),
+        new Vector3(segmentLength * 0.7f, 0.45f, 1f)
+    );
+
+    wall.name = $"MazeWall_S{segment}_L{lane}";
+}
+
 private void GenerateMouseMazeBoundaries()
 {
     const float gapWidth = 2f;
 
-    GenerateBoundaryLine(-1.5f, 0);
-    GenerateBoundaryLine(-2.5f, 1);
+    // GenerateBoundaryLine(-1.5f, 0);
+    // GenerateBoundaryLine(-2.5f, 1);
 
-    void GenerateBoundaryLine(float y, int connectorType)
-    {
-        float currentX = 0f;
+    // void GenerateBoundaryLine(float y, int connectorType)
+    // {
+    //     float currentX = 0f;
 
-        foreach (var connector in generatedConnectors)
-        {
-            if (connector.connectorType != connectorType)
-                continue;
+    //     foreach (var connector in generatedConnectors)
+    //     {
+    //         if (connector.connectorType != connectorType)
+    //             continue;
 
-            float leftLength = connector.x - gapWidth * 0.5f - currentX;
+    //         float leftLength = connector.x - gapWidth * 0.5f - currentX;
 
-            if (leftLength > 0.1f)
-            {
-                Spawn(
-                    mouseMazeBoundaryPrefab,
-                    new Vector3(currentX + leftLength * 0.5f, y, 0f),
-                    new Vector3(leftLength, 0.2f, 1f)
-                );
-            }
+    //         if (leftLength > 0.1f)
+    //         {
+    //             Spawn(
+    //                 mouseMazeBoundaryPrefab,
+    //                 new Vector3(currentX + leftLength * 0.5f, y, 0f),
+    //                 new Vector3(leftLength, 0.2f, 1f)
+    //             );
+    //         }
 
-            currentX = connector.x + gapWidth * 0.5f;
-        }
+    //         currentX = connector.x + gapWidth * 0.5f;
+    //     }
 
-        float remainingLength = trackLength - currentX;
+    //     float remainingLength = trackLength - currentX;
 
-        if (remainingLength > 0.1f)
-        {
-            Spawn(
-                mouseMazeBoundaryPrefab,
-                new Vector3(currentX + remainingLength * 0.5f, y, 0f),
-                new Vector3(remainingLength, 0.2f, 1f)
-            );
-        }
-    }
+    //     if (remainingLength > 0.1f)
+    //     {
+    //         Spawn(
+    //             mouseMazeBoundaryPrefab,
+    //             new Vector3(currentX + remainingLength * 0.5f, y, 0f),
+    //             new Vector3(remainingLength, 0.2f, 1f)
+    //         );
+    //     }
+    // }
 
     Spawn(
     mouseMazeBoundaryPrefab,

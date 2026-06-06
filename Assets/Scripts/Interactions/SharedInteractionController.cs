@@ -6,6 +6,9 @@ public sealed class SharedInteractionController : MonoBehaviour
 
     private InteractionAccessPoint elephantAccessPoint;
     private InteractionAccessPoint mouseAccessPoint;
+    [SerializeField] private GameObject birdAttackPrefab;
+[SerializeField] private Transform elephant;
+[SerializeField] private ScreenObscurer screenObscurer;
 
     public bool IsUsed => used;
 
@@ -16,6 +19,16 @@ public sealed class SharedInteractionController : MonoBehaviour
         elephantAccessPoint = elephantPoint;
         mouseAccessPoint = mousePoint;
     }
+
+    public void SetupReferences(
+    GameObject birdPrefab,
+    Transform elephantTransform,
+    ScreenObscurer obscurer)
+{
+    birdAttackPrefab = birdPrefab;
+    elephant = elephantTransform;
+    screenObscurer = obscurer;
+}
 
     public void Activate(PlayerId activator)
     {
@@ -42,7 +55,23 @@ public sealed class SharedInteractionController : MonoBehaviour
     }
 
     private void TriggerBirdAttack()
+{
+    Debug.Log("BIRD ATTACK!");
+
+    if (birdAttackPrefab == null)
+        return;
+
+    GameObject bird = Instantiate(birdAttackPrefab);
+
+    BirdAttackActor actor =
+        bird.GetComponent<BirdAttackActor>();
+
+    if (actor != null)
     {
-        Debug.Log("BIRD ATTACK!");
+        actor.Initialize(
+            elephant,
+            screenObscurer
+        );
     }
+}
 }
