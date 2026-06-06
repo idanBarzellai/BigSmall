@@ -1,39 +1,65 @@
 using UnityEngine;
 
+public sealed class StompPoint : InteractionPoint
+{
+    [Header("Stomp Settings")]
+    [SerializeField] private float stompCooldown = 0.5f;
 
-    public sealed class StompPoint : MonoBehaviour
+    private float lastStompTime = -999f;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        // [SerializeField] private InteractionEffect effect;
-        // [SerializeField] private float cooldown = 1.5f;
-        // private float lastActivated = -100f;
+        if (!IsAvailable)
+            return;
 
-        // public void Activate()
-        // {
-        //     effect?.Apply();
-        // }
+        if (Time.time < lastStompTime + stompCooldown)
+            return;
 
-        // public void SetEffect(InteractionEffect e)
-        // {
-        //     effect = e;
-        // }
+        ElephantController elephant = other.GetComponent<ElephantController>();
 
-        // private void OnTriggerEnter2D(Collider2D other)
-        // {
-        //     if (other == null) return;
+        if (elephant != null)
+        {
+            TryActivateByElephant(other);
+            return;
+        }
 
-        //     // Only react to the Elephant
-        //     var elephant = other.GetComponent<ElephantVsMouse.Gameplay.Players.ElephantController>();
-        //     if (elephant == null) return;
+        MouseController mouse = other.GetComponent<MouseController>();
 
-        //     Rigidbody2D rb = other.attachedRigidbody;
-        //     if (rb == null) return;
-
-        //     // Activate only when the elephant is landing from above (i.e. falling onto the trigger)
-        //     if (rb.linearVelocity.y <= 0f && other.transform.position.y > transform.position.y)
-        //     {
-        //         if (Time.time - lastActivated < cooldown) return;
-        //         lastActivated = Time.time;
-        //         Activate();
-        //     }
-        // }
+        if (mouse != null)
+        {
+            DisableByMouse();
+        }
     }
+
+    private void TryActivateByElephant(Collider2D other)
+    {
+        Rigidbody2D rb = other.attachedRigidbody;
+
+        if (rb == null)
+            return;
+
+        bool isFalling = rb.linearVelocity.y <= 0f;
+        bool isAbovePoint = other.transform.position.y > transform.position.y;
+
+        if (!isFalling || !isAbovePoint)
+            return;
+
+        lastStompTime = Time.time;
+
+        Debug.Log("Elephant activated stomp point");
+
+        // Later: trigger earthquake effect here.
+        MarkUsed();
+
+        // Elephant stomping this point disables the linked mouse hole.
+        if (linkedPoint != null)
+            linkedPoint.DisablePoint();
+    }
+
+    private void DisableByMouse()
+    {
+        Debug.Log("Mouse disabled stomp point");
+
+        DisablePoint();
+    }
+}

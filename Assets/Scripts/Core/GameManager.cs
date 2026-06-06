@@ -1,16 +1,61 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public sealed class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("References")]
+    [SerializeField] private RaceManager raceManager;
+    [SerializeField] private ElephantController elephant;
+    [SerializeField] private MouseController mouse;
+    [SerializeField] private CameraFollower cameraFollower;
+
+    private void Awake()
     {
-        
+        raceManager.RoundEnded += HandleRoundEnded;
+        raceManager.MatchEnded += HandleMatchEnded;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        raceManager.StartNewMatch();
+    }
+
+    private void OnDestroy()
+    {
+        raceManager.RoundEnded -= HandleRoundEnded;
+        raceManager.MatchEnded -= HandleMatchEnded;
+    }
+
+    private void HandleRoundEnded(PlayerId winner)
+    {
+        Debug.Log($"Round Winner: {winner}");
+
+        elephant.SetCanMove(false);
+        mouse.SetCanMove(false);
+
+        // temporary restart
+        Invoke(nameof(StartNextRound), 2f);
+    }
+
+    private void HandleMatchEnded(PlayerId winner)
+    {
+        Debug.Log($"Match Winner: {winner}");
+
+        elephant.SetCanMove(false);
+        mouse.SetCanMove(false);
+    }
+
+    private void StartNextRound()
+    {
+        // temporary reset positions
+
+        elephant.transform.position = new Vector3(0f, 2f, 0f);
+        mouse.transform.position = new Vector3(0f, -2f, 0f);
+
+        elephant.SetCanMove(true);
+        mouse.SetCanMove(true);
+
+        cameraFollower.ResetForNewRound();
+
+        raceManager.StartNewRound();
     }
 }
