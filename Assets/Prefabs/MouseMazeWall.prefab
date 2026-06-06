@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4751273943918422403}
   - component: {fileID: 1470535114965437200}
   - component: {fileID: 7764847840153134258}
+  - component: {fileID: 6679382530164047602}
   m_Layer: 0
   m_Name: MouseMazeWall
   m_TagString: Untagged
@@ -138,3 +139,15 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6679382530164047602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7354225502215736107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9916b59dd700c1e4b98dff8354cf693a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MazeWall

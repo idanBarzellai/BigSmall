@@ -6,6 +6,7 @@ public sealed class ElephantController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float minMoveSpeed = 4f;
     [SerializeField] private float maxMoveSpeed = 8f;
+    [SerializeField] private float obstacleRecoverySpeed = 0f;
     [SerializeField] private float accelerationRate = 1.2f;
     [SerializeField] private float jumpForce = 6f;
     [SerializeField] private float jumpCooldown = 0.9f;
@@ -70,7 +71,7 @@ private float nextAllowedJumpTime;
         if (Mathf.Abs(moveInput) > 0.01f)
         {
             currentMoveSpeed += accelerationRate * Time.fixedDeltaTime;
-            currentMoveSpeed = Mathf.Clamp(currentMoveSpeed, minMoveSpeed, maxMoveSpeed);
+currentMoveSpeed = Mathf.Clamp(currentMoveSpeed, obstacleRecoverySpeed, maxMoveSpeed);
         }
         else
         {
@@ -109,4 +110,9 @@ private float nextAllowedJumpTime;
             groundLayers
         );
     }
+
+    public void CrashMomentum()
+{
+    currentMoveSpeed = obstacleRecoverySpeed;
+}
 }

@@ -361,8 +361,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23e41365146621e4a999724c25150072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ElephantVsMouse.Gameplay.Players.ElephantController
-  minMoveSpeed: 2
-  maxMoveSpeed: 10
+  minMoveSpeed: 4
+  maxMoveSpeed: 9
+  obstacleRecoverySpeed: 0
   accelerationRate: 1.5
   jumpForce: 9
   jumpCooldown: 0.9
@@ -433,7 +434,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -651,8 +652,10 @@ MonoBehaviour:
   interactionAccessPointPrefab: {fileID: 6118158591806393863, guid: 8ef96d76f39ae084fbbf8b509ec1950d, type: 3}
   birdAttackPrefab: {fileID: 227722709361368886, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
   elephant: {fileID: 430608963}
+  mouse: {fileID: 1434177746}
   screenObscurer: {fileID: 303580086}
   mazeWallPrefab: {fileID: 7354225502215736107, guid: c9bf72579e419e24fb11fed5f1b1e9d3, type: 3}
+  earthquakeWallPrefab: {fileID: 7354225502215736107, guid: c9bf72579e419e24fb11fed5f1b1e9d3, type: 3}
   finishLinePrefab: {fileID: 4016434665711424873, guid: 92767196081f0c549920174bf229c224, type: 3}
   mouseConnectorPrefab: {fileID: 4927187283108857601, guid: 36f2d49c555fe594881f1fa662b8fa93, type: 3}
   mouseMazeBoundaryPrefab: {fileID: 9017325889041225302, guid: aaedb206b3a96744086f921a67b017bf, type: 3}
@@ -1183,71 +1186,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &8696611426728553542
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.64264
-      objectReference: {fileID: 0}
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.86794
-      objectReference: {fileID: 0}
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 151594444204551745, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 227722709361368886, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: m_Name
-      value: BirdAttack
-      objectReference: {fileID: 0}
-    - target: {fileID: 6284167224443681354, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: elephant
-      value: 
-      objectReference: {fileID: 430608966}
-    - target: {fileID: 6284167224443681354, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
-      propertyPath: screenObscurer
-      value: 
-      objectReference: {fileID: 303580086}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1261,4 +1199,3 @@ SceneRoots:
   - {fileID: 1434177749}
   - {fileID: 303580085}
   - {fileID: 1700342758}
-  - {fileID: 8696611426728553542}

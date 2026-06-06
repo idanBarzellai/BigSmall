@@ -20,7 +20,7 @@ public sealed class Obstacle : MonoBehaviour
         switch (effectType)
         {
             case ObstacleEffectType.ResetMomentum:
-                elephant.ResetMomentum();
+                elephant.CrashMomentum();
                 Destroy(gameObject);
                 break;
 

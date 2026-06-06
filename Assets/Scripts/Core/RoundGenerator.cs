@@ -1,6 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public sealed class MouseMazeSegment
+{
+    public float startX;
+    public float endX;
+    public int openLane;
+    public bool earthquakeBlocked;
+}
+
 public sealed class RoundGenerator : MonoBehaviour
 {
     [Header("Prefabs")]
@@ -9,11 +18,15 @@ public sealed class RoundGenerator : MonoBehaviour
     [SerializeField] private GameObject interactionAccessPointPrefab;
     [SerializeField] private GameObject birdAttackPrefab;
 [SerializeField] private ElephantController elephant;
+[SerializeField] private MouseController mouse;
+
 [SerializeField] private ScreenObscurer screenObscurer;
     [SerializeField] private GameObject mazeWallPrefab;
+    [SerializeField] private GameObject earthquakeWallPrefab;
     [SerializeField] private GameObject finishLinePrefab;
     [SerializeField] private GameObject mouseConnectorPrefab;
     [SerializeField] private GameObject mouseMazeBoundaryPrefab;
+    private readonly List<MouseMazeSegment> mouseMazeSegments = new();
     private readonly List<(float x, int connectorType)> generatedConnectors = new();
 
     [Header("References")]
@@ -54,11 +67,13 @@ public sealed class RoundGenerator : MonoBehaviour
         }
 
         spawnedObjects.Clear();
+        mazeWalls.Clear();
+        mouseMazeSegments.Clear();
     }
 
     private void GenerateGround()
     {
-        Spawn(groundPrefab, new Vector3(trackLength * 0.5f, 0f, 0f), new Vector3(trackLength, 1f, 1f));
+        Spawn(groundPrefab, new Vector3(trackLength * 0.5f, 0f, 0f), new Vector3(trackLength, 0.55f, 1f));
     }
 
     private void GenerateFinishLine()
@@ -124,10 +139,12 @@ public sealed class RoundGenerator : MonoBehaviour
         SharedInteractionController controller =
             controllerObject.AddComponent<SharedInteractionController>();
 
-            controller.SetupReferences(
+           controller.SetupReferences(
     birdAttackPrefab,
     elephant.transform,
-    screenObscurer
+    screenObscurer,
+    this,
+    mouse.transform
 );
 
         spawnedObjects.Add(controllerObject);
@@ -156,8 +173,9 @@ public sealed class RoundGenerator : MonoBehaviour
         controller.Initialize(elephantPoint, mousePoint);
     }
 }
+private readonly List<MazeWall> mazeWalls = new();
 
- private void GenerateMouseMazeWalls()
+private void GenerateMouseMazeWalls()
 {
     const float segmentLength = 7f;
 
@@ -169,45 +187,109 @@ public sealed class RoundGenerator : MonoBehaviour
     };
 
     int segmentCount = Mathf.RoundToInt(trackLength / segmentLength);
-generatedConnectors.Clear();
+
+    generatedConnectors.Clear();
+    mouseMazeSegments.Clear();
+
     for (int segment = 0; segment < segmentCount; segment++)
     {
         float segmentStartX = segment * segmentLength;
+        float segmentEndX = segmentStartX + segmentLength;
         float segmentCenterX = segmentStartX + segmentLength * 0.5f;
 
         int firstBlockedLane = Random.Range(0, 3);
-int secondBlockedLane = Random.Range(0, 3);
+        int secondBlockedLane = Random.Range(0, 3);
 
-while (secondBlockedLane == firstBlockedLane)
-{
-    secondBlockedLane = Random.Range(0, 3);
-}
+        while (secondBlockedLane == firstBlockedLane)
+        {
+            secondBlockedLane = Random.Range(0, 3);
+        }
 
-CreateMazeWall(segment, firstBlockedLane, segmentCenterX, segmentLength, laneY);
-CreateMazeWall(segment, secondBlockedLane, segmentCenterX, segmentLength, laneY);
+        int openLane = 0;
+
+        for (int lane = 0; lane < 3; lane++)
+        {
+            if (lane != firstBlockedLane && lane != secondBlockedLane)
+            {
+                openLane = lane;
+                break;
+            }
+        }
+
+        mouseMazeSegments.Add(new MouseMazeSegment
+        {
+            startX = segmentStartX,
+            endX = segmentEndX,
+            openLane = openLane,
+            earthquakeBlocked = false
+        });
+
+        CreateMazeWall(segment, firstBlockedLane, segmentCenterX, segmentLength, laneY);
+        CreateMazeWall(segment, secondBlockedLane, segmentCenterX, segmentLength, laneY);
 
         if (segment < segmentCount - 1)
         {
             int connectorType = Random.Range(0, 2);
+            float connectorX = segmentEndX;
 
-            float connectorX = segmentStartX + segmentLength;
-generatedConnectors.Add((connectorX, connectorType));
+            generatedConnectors.Add((connectorX, connectorType));
+
             if (connectorType == 0)
             {
                 Spawn(
                     mouseConnectorPrefab,
                     new Vector3(connectorX, -1.5f, 0f),
-new Vector3(0.4f, 1f, 1f)                );
+                    new Vector3(0.4f, 1f, 1f)
+                );
             }
             else
             {
                 Spawn(
                     mouseConnectorPrefab,
                     new Vector3(connectorX, -2.5f, 0f),
-new Vector3(0.4f, 1f, 1f)                );
+                    new Vector3(0.4f, 1f, 1f)
+                );
             }
         }
     }
+}
+
+public void TriggerEarthquake(float mouseX)
+{
+    float[] laneY =
+    {
+        -1f,
+        -2f,
+        -3f
+    };
+
+    foreach (MouseMazeSegment segment in mouseMazeSegments)
+    {
+        if (segment.earthquakeBlocked)
+            continue;
+
+        if (segment.startX <= mouseX)
+            continue;
+
+        float centerX = (segment.startX + segment.endX) * 0.5f;
+        float segmentLength = segment.endX - segment.startX;
+
+        GameObject blocker = Spawn(
+            earthquakeWallPrefab != null ? earthquakeWallPrefab : mazeWallPrefab,
+            new Vector3(centerX, laneY[segment.openLane], 0f),
+            new Vector3(segmentLength * 0.9f, 0.75f, 1f)
+        );
+
+        blocker.name = $"EarthquakeBlocker_Lane_{segment.openLane}";
+
+        segment.earthquakeBlocked = true;
+
+        Debug.Log($"Earthquake blocked lane {segment.openLane}");
+
+        return;
+    }
+
+    Debug.Log("No valid future segment to block");
 }
 
 private void CreateMazeWall(
@@ -224,11 +306,16 @@ private void CreateMazeWall(
     );
 
     wall.name = $"MazeWall_S{segment}_L{lane}";
-}
 
+    MazeWall mazeWall = wall.GetComponent<MazeWall>();
+
+    if (mazeWall != null)
+    {
+        mazeWalls.Add(mazeWall);
+    }
+}
 private void GenerateMouseMazeBoundaries()
 {
-    const float gapWidth = 2f;
 
     // GenerateBoundaryLine(-1.5f, 0);
     // GenerateBoundaryLine(-2.5f, 1);
@@ -270,7 +357,7 @@ private void GenerateMouseMazeBoundaries()
 
     Spawn(
     mouseMazeBoundaryPrefab,
-    new Vector3(trackLength * 0.5f, -3.5f, 0f),
+new Vector3(trackLength * 0.5f, -3.8f, 0f),
     new Vector3(trackLength, 0.2f, 1f)
 );
 }

@@ -9,6 +9,8 @@ public sealed class SharedInteractionController : MonoBehaviour
     [SerializeField] private GameObject birdAttackPrefab;
 [SerializeField] private Transform elephant;
 [SerializeField] private ScreenObscurer screenObscurer;
+[SerializeField] private RoundGenerator roundGenerator;
+[SerializeField] private Transform mouse;
 
     public bool IsUsed => used;
 
@@ -23,11 +25,15 @@ public sealed class SharedInteractionController : MonoBehaviour
     public void SetupReferences(
     GameObject birdPrefab,
     Transform elephantTransform,
-    ScreenObscurer obscurer)
+    ScreenObscurer obscurer,
+    RoundGenerator generator,
+Transform mouseTransform)
 {
     birdAttackPrefab = birdPrefab;
     elephant = elephantTransform;
     screenObscurer = obscurer;
+    roundGenerator = generator;
+    mouse = mouseTransform;
 }
 
     public void Activate(PlayerId activator)
@@ -50,9 +56,14 @@ public sealed class SharedInteractionController : MonoBehaviour
     }
 
     private void TriggerEarthquake()
+{
+    Debug.Log("EARTHQUAKE!");
+
+    if (roundGenerator != null && mouse != null)
     {
-        Debug.Log("EARTHQUAKE!");
+        roundGenerator.TriggerEarthquake(mouse.position.x);
     }
+}
 
     private void TriggerBirdAttack()
 {
