@@ -38,7 +38,6 @@ public sealed class RoundGenerator : MonoBehaviour
     [Header("Generation")]
     [SerializeField] private int obstacleCount = 7;
     [SerializeField] private int interactionPointCount = 5;
-    [SerializeField] private int mazeWallCount = 20;
 
     private readonly List<GameObject> spawnedObjects = new();
 
@@ -67,7 +66,7 @@ public sealed class RoundGenerator : MonoBehaviour
         }
 
         spawnedObjects.Clear();
-        mazeWalls.Clear();
+        // mazeWalls.Clear();
         mouseMazeSegments.Clear();
     }
 
@@ -173,7 +172,7 @@ public sealed class RoundGenerator : MonoBehaviour
         controller.Initialize(elephantPoint, mousePoint);
     }
 }
-private readonly List<MazeWall> mazeWalls = new();
+// private readonly List<MazeWall> mazeWalls = new();
 
 private void GenerateMouseMazeWalls()
 {
@@ -307,12 +306,12 @@ private void CreateMazeWall(
 
     wall.name = $"MazeWall_S{segment}_L{lane}";
 
-    MazeWall mazeWall = wall.GetComponent<MazeWall>();
+    // MazeWall mazeWall = wall.GetComponent<MazeWall>();
 
-    if (mazeWall != null)
-    {
-        mazeWalls.Add(mazeWall);
-    }
+    // if (mazeWall != null)
+    // {
+    //     mazeWalls.Add(mazeWall);
+    // }
 }
 private void GenerateMouseMazeBoundaries()
 {

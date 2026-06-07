@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public sealed class ScreenObscurer : MonoBehaviour
 {
-    [SerializeField] private Canvas canvas;
     [SerializeField] private Image coverImage;
     [SerializeField] private float defaultDuration = 2.5f;
 
@@ -12,8 +11,6 @@ public sealed class ScreenObscurer : MonoBehaviour
 
     private void Awake()
     {
-        if (canvas == null)
-            canvas = GetComponentInChildren<Canvas>();
 
         if (coverImage != null)
             coverImage.gameObject.SetActive(false);
