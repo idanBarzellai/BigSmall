@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4751273943918422403}
   - component: {fileID: 1470535114965437200}
   - component: {fileID: 7764847840153134258}
-  - component: {fileID: 6679382530164047602}
   m_Layer: 0
   m_Name: MouseMazeWall
   m_TagString: Untagged
@@ -28,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 7354225502215736107}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.67741, y: 2.15347, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 5, y: 1.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -139,15 +138,3 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6679382530164047602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7354225502215736107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9916b59dd700c1e4b98dff8354cf693a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MazeWall

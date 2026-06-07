@@ -267,7 +267,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f83da23894edc4589e80be89b78536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScreenObscurer
-  canvas: {fileID: 218108524}
   coverImage: {fileID: 1621294502}
   defaultDuration: 2.5
 --- !u!1 &430608961
@@ -365,8 +364,8 @@ MonoBehaviour:
   maxMoveSpeed: 9
   obstacleRecoverySpeed: 0
   accelerationRate: 1.5
-  jumpForce: 9
-  jumpCooldown: 0.9
+  jumpForce: 7
+  jumpCooldown: 0.2
   groundCheck: {fileID: 866451071}
   groundCheckRadius: 0.15
   groundLayers:
@@ -455,8 +454,8 @@ Transform:
   m_GameObject: {fileID: 430608961}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.07, y: 2.42, z: 0}
-  m_LocalScale: {x: 1.7072, y: 1.7072, z: 1.7072}
+  m_LocalPosition: {x: 0, y: 2.42, z: 0}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 1.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 866451071}
@@ -663,7 +662,19 @@ MonoBehaviour:
   trackLength: 80
   obstacleCount: 7
   interactionPointCount: 5
-  mazeWallCount: 20
+  obstacleY: 0.5
+  obstacleStartPadding: 10
+  obstacleEndPadding: 10
+  obstacleSegmentInnerPadding: 1
+  mazeWallWidthMultiplier: 0.85
+  mazeWallYOffset: 0
+  mouseInteractionBlockPrefab: {fileID: 7354225502215736107, guid: dbf449e71edd2db49bdf017d9e3e358c, type: 3}
+  mouseInteractionRoomXOffset: 0.8
+  mouseInteractionRoomYOffset: 0.75
+  mouseInteractionBlockSpacing: 1
+  groundBuffer: -0.25
+  laneHeight: -1.3
+  mouseHeightBuffer: -0.5
 --- !u!4 &772806741
 Transform:
   m_ObjectHideFlags: 0
@@ -673,7 +684,7 @@ Transform:
   m_GameObject: {fileID: 772806739}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.67741, y: 2.15347, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -705,7 +716,7 @@ Transform:
   m_GameObject: {fileID: 777200353}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -750,7 +761,7 @@ Transform:
   m_GameObject: {fileID: 813037605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -923,8 +934,8 @@ Transform:
   m_GameObject: {fileID: 1434177745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.08, y: -2.48, z: 0}
-  m_LocalScale: {x: 0.3613, y: 0.3613, z: 0.3613}
+  m_LocalPosition: {x: 0, y: -2.48, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1089,7 +1100,7 @@ Transform:
   m_GameObject: {fileID: 1667998891}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

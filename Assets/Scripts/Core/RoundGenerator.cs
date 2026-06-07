@@ -10,6 +10,12 @@ public sealed class MouseMazeSegment
     public bool earthquakeBlocked;
 }
 
+public enum WallOpening
+{
+    Top,
+    Bottom
+}
+
 public sealed class RoundGenerator : MonoBehaviour
 {
     [Header("Prefabs")]
@@ -39,13 +45,43 @@ public sealed class RoundGenerator : MonoBehaviour
     [SerializeField] private int obstacleCount = 7;
     [SerializeField] private int interactionPointCount = 5;
 
-    private readonly List<GameObject> spawnedObjects = new();
+    [Header("Elephant Obstacle Placement")]
+[SerializeField] private float obstacleY = 1.05f;
+[SerializeField] private float obstacleStartPadding = 10f;
+[SerializeField] private float obstacleEndPadding = 10f;
+[SerializeField] private float obstacleSegmentInnerPadding = 1f;
 
+[Header("Mouse Maze Wall Placement")]
+[SerializeField] private float mazeWallWidthMultiplier = 0.85f;
+[SerializeField] private float mazeWallYOffset = 0.25f;
+
+[Header("Mouse Interaction Dead Ends")]
+[SerializeField] private GameObject mouseInteractionBlockPrefab;
+[SerializeField] private float mouseInteractionRoomXOffset = 0.8f;
+[SerializeField] private float mouseInteractionRoomYOffset = 0.75f;
+[SerializeField] private float mouseInteractionBlockSpacing = 0.45f;
+
+[Header("Mouse Maze Layout")]
+[SerializeField] private float groundBuffer = -0.25f;
+[SerializeField] private float laneHeight = -1.3f;
+[SerializeField] private float mouseHeightBuffer = -0.5f;
+
+ //Mouse height top + bottom + wall height 
+private float mouseTopLaneY;
+private float mouseMiddleLaneY;
+private float mouseBottomLaneY;
+private float topMiddleConnectorY;
+private float middleBottomConnectorY;
+private float bottomBoundaryY;
+
+    private readonly List<GameObject> spawnedObjects = new();
+private readonly List<float> obstacleXs = new();
     public float FinishX => trackLength;
 
     public void GenerateRound()
 {
     ClearRound();
+        SetupMouseMazeConfiguration();
 
     GenerateGround();
     GenerateFinishLine();
@@ -66,33 +102,67 @@ public sealed class RoundGenerator : MonoBehaviour
         }
 
         spawnedObjects.Clear();
-        // mazeWalls.Clear();
+obstacleXs.Clear();
         mouseMazeSegments.Clear();
     }
 
     private void GenerateGround()
     {
-        Spawn(groundPrefab, new Vector3(trackLength * 0.5f, 0f, 0f), new Vector3(trackLength, 0.55f, 1f));
+        Spawn(groundPrefab, new Vector3(trackLength * 0.5f, 0f, 0f));
+    }
+
+    private void SetupMouseMazeConfiguration()
+    {
+        mouseTopLaneY = groundBuffer  + mouseHeightBuffer + laneHeight / 2f;
+        mouseMiddleLaneY = mouseTopLaneY + mouseHeightBuffer + laneHeight;
+        mouseBottomLaneY = mouseMiddleLaneY  + mouseHeightBuffer + laneHeight;
+        bottomBoundaryY = -5.5f;
+        topMiddleConnectorY = mouseTopLaneY +  laneHeight / 2f + mouseHeightBuffer /2f;
+        middleBottomConnectorY = mouseMiddleLaneY  +  laneHeight / 2f + mouseHeightBuffer /2f;
     }
 
     private void GenerateFinishLine()
     {
-        GameObject finish = Spawn(finishLinePrefab, new Vector3(trackLength, 0f, 0f), new Vector3(0.3f, 8f, 1f));
+        GameObject finish = Spawn(finishLinePrefab, new Vector3(trackLength, 0f, 0f));
 
         FinishLine finishLine = finish.GetComponent<FinishLine>();
         if (finishLine != null)
             finishLine.SetRaceManager(raceManager);
     }
 
-    private void GenerateElephantObstacles()
-    {
-        for (int i = 0; i < obstacleCount; i++)
-        {
-            float x = Random.Range(8f, trackLength - 8f);
+private void GenerateElephantObstacles()
+{
+    float usableLength = trackLength - obstacleStartPadding - obstacleEndPadding;
+    float segmentLength = usableLength / obstacleCount;
 
-            Spawn(obstaclePrefab, new Vector3(x, 1.15f, 0f), new Vector3(0.8f, 0.8f, 1f));
-        }
+    for (int i = 0; i < obstacleCount; i++)
+    {
+        float segmentStart = obstacleStartPadding + i * segmentLength;
+        float segmentEnd = segmentStart + segmentLength;
+
+        float x = Random.Range(
+            segmentStart + obstacleSegmentInnerPadding,
+            segmentEnd - obstacleSegmentInnerPadding
+        );
+
+        obstacleXs.Add(x);
+
+        Spawn(
+            obstaclePrefab,
+            new Vector3(x, obstacleY, 0f)
+        );
     }
+}
+private bool IsTooCloseToObstacle(float x, float minDistance)
+{
+    foreach (float obstacleX in obstacleXs)
+    {
+        if (Mathf.Abs(x - obstacleX) < minDistance)
+            return true;
+    }
+
+    return false;
+}
 
     private void GenerateInteractionPairs()
 {
@@ -106,6 +176,7 @@ public sealed class RoundGenerator : MonoBehaviour
     };
 
     List<float> validInteractionXs = new();
+    const float minDistanceFromObstacle = 2.5f;
 
     foreach (var connector in generatedConnectors)
     {
@@ -123,12 +194,22 @@ public sealed class RoundGenerator : MonoBehaviour
         {
             int randomIndex = Random.Range(0, validInteractionXs.Count);
             x = validInteractionXs[randomIndex];
-            validInteractionXs.RemoveAt(randomIndex);
+validInteractionXs.RemoveAt(randomIndex);
+
+if (IsTooCloseToObstacle(x, minDistanceFromObstacle))
+{
+    i--;
+    continue;
+}
         }
         else
-        {
-            x = Random.Range(10f, trackLength - 10f);
-        }
+{
+    Debug.LogWarning(
+        $"Only generated {i} interaction points because there were not enough top connectors."
+    );
+
+    break;
+}
 
         Color color = colors[i % colors.Length];
 
@@ -150,15 +231,42 @@ public sealed class RoundGenerator : MonoBehaviour
 
         GameObject elephantPointObject = Spawn(
             interactionAccessPointPrefab,
-            new Vector3(x, 0.85f, 0f),
-            Vector3.one * 0.55f
+            new Vector3(x, 0.85f, 0f)
         );
 
-        GameObject mousePointObject = Spawn(
-            interactionAccessPointPrefab,
-            new Vector3(x, -1f, 0f),
-            Vector3.one * 0.45f
-        );
+
+Vector3 mouseInteractionPosition = new Vector3(
+    x ,
+    groundBuffer + mouseHeightBuffer / 2f,
+    0f
+);
+
+GameObject mousePointObject = Spawn(
+    interactionAccessPointPrefab,
+    mouseInteractionPosition
+);
+
+Spawn(
+    mouseInteractionBlockPrefab != null
+        ? mouseInteractionBlockPrefab
+        : mazeWallPrefab,
+    new Vector3(
+        mouseInteractionPosition.x - mouseInteractionBlockSpacing,
+        mouseInteractionPosition.y,
+        0f
+    )
+);
+
+Spawn(
+    mouseInteractionBlockPrefab != null
+        ? mouseInteractionBlockPrefab
+        : mazeWallPrefab,
+    new Vector3(
+        mouseInteractionPosition.x + mouseInteractionBlockSpacing,
+        mouseInteractionPosition.y,
+        0f
+    )
+);
 
         InteractionAccessPoint elephantPoint =
             elephantPointObject.GetComponent<InteractionAccessPoint>();
@@ -179,11 +287,11 @@ private void GenerateMouseMazeWalls()
     const float segmentLength = 7f;
 
     float[] laneY =
-    {
-        -1f, // Top
-        -2f, // Middle
-        -3f  // Bottom
-    };
+{
+    mouseTopLaneY,
+    mouseMiddleLaneY,
+    mouseBottomLaneY
+};
 
     int segmentCount = Mathf.RoundToInt(trackLength / segmentLength);
 
@@ -237,16 +345,14 @@ private void GenerateMouseMazeWalls()
             {
                 Spawn(
                     mouseConnectorPrefab,
-                    new Vector3(connectorX, -1.5f, 0f),
-                    new Vector3(0.4f, 1f, 1f)
+                    new Vector3(connectorX, topMiddleConnectorY, 0f)
                 );
             }
             else
             {
                 Spawn(
                     mouseConnectorPrefab,
-                    new Vector3(connectorX, -2.5f, 0f),
-                    new Vector3(0.4f, 1f, 1f)
+                    new Vector3(connectorX, middleBottomConnectorY, 0f)
                 );
             }
         }
@@ -256,11 +362,11 @@ private void GenerateMouseMazeWalls()
 public void TriggerEarthquake(float mouseX)
 {
     float[] laneY =
-    {
-        -1f,
-        -2f,
-        -3f
-    };
+{
+    mouseTopLaneY,
+    mouseMiddleLaneY,
+    mouseBottomLaneY
+};
 
     foreach (MouseMazeSegment segment in mouseMazeSegments)
     {
@@ -275,8 +381,7 @@ public void TriggerEarthquake(float mouseX)
 
         GameObject blocker = Spawn(
             earthquakeWallPrefab != null ? earthquakeWallPrefab : mazeWallPrefab,
-            new Vector3(centerX, laneY[segment.openLane], 0f),
-            new Vector3(segmentLength * 0.9f, 0.75f, 1f)
+            new Vector3(centerX, laneY[segment.openLane], 0f)
         );
 
         blocker.name = $"EarthquakeBlocker_Lane_{segment.openLane}";
@@ -298,74 +403,50 @@ private void CreateMazeWall(
     float segmentLength,
     float[] laneY)
 {
+    WallOpening opening =
+        Random.value > 0.5f
+            ? WallOpening.Top
+            : WallOpening.Bottom;
+
+float yOffset =
+    opening == WallOpening.Top
+        ? -mazeWallYOffset
+        : mazeWallYOffset;
+
     GameObject wall = Spawn(
-        mazeWallPrefab,
-        new Vector3(segmentCenterX, laneY[lane], 0f),
-        new Vector3(segmentLength * 0.7f, 0.45f, 1f)
-    );
+    mazeWallPrefab,
+    new Vector3(
+        segmentCenterX,
+        laneY[lane] + yOffset,
+        0f
+    )
+);
 
-    wall.name = $"MazeWall_S{segment}_L{lane}";
-
-    // MazeWall mazeWall = wall.GetComponent<MazeWall>();
-
-    // if (mazeWall != null)
-    // {
-    //     mazeWalls.Add(mazeWall);
-    // }
+    wall.name =
+        $"MazeWall_S{segment}_L{lane}_{opening}";
 }
 private void GenerateMouseMazeBoundaries()
 {
 
-    // GenerateBoundaryLine(-1.5f, 0);
-    // GenerateBoundaryLine(-2.5f, 1);
-
-    // void GenerateBoundaryLine(float y, int connectorType)
-    // {
-    //     float currentX = 0f;
-
-    //     foreach (var connector in generatedConnectors)
-    //     {
-    //         if (connector.connectorType != connectorType)
-    //             continue;
-
-    //         float leftLength = connector.x - gapWidth * 0.5f - currentX;
-
-    //         if (leftLength > 0.1f)
-    //         {
-    //             Spawn(
-    //                 mouseMazeBoundaryPrefab,
-    //                 new Vector3(currentX + leftLength * 0.5f, y, 0f),
-    //                 new Vector3(leftLength, 0.2f, 1f)
-    //             );
-    //         }
-
-    //         currentX = connector.x + gapWidth * 0.5f;
-    //     }
-
-    //     float remainingLength = trackLength - currentX;
-
-    //     if (remainingLength > 0.1f)
-    //     {
-    //         Spawn(
-    //             mouseMazeBoundaryPrefab,
-    //             new Vector3(currentX + remainingLength * 0.5f, y, 0f),
-    //             new Vector3(remainingLength, 0.2f, 1f)
-    //         );
-    //     }
-    // }
 
     Spawn(
     mouseMazeBoundaryPrefab,
-new Vector3(trackLength * 0.5f, -3.8f, 0f),
-    new Vector3(trackLength, 0.2f, 1f)
+new Vector3(trackLength * 0.5f, bottomBoundaryY, 0f)
 );
 }
 
-    private GameObject Spawn(GameObject prefab, Vector3 position, Vector3 scale)
-    {
-        GameObject obj = Instantiate(prefab, position, Quaternion.identity, transform);
-        obj.transform.localScale = scale;
-        spawnedObjects.Add(obj);
-        return obj;
-    }
+private GameObject Spawn(GameObject prefab, Vector3 position)
+{
+    GameObject obj =
+        Instantiate(
+            prefab,
+            position,
+            Quaternion.identity,
+            transform
+        );
+
+    spawnedObjects.Add(obj);
+
+    return obj;
+}
 }
