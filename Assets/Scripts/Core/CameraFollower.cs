@@ -15,6 +15,12 @@ public sealed class CameraFollower : MonoBehaviour
     [Header("Lose Detection")]
     [SerializeField] private float loseBuffer = 1.5f;
 
+    [Header("Shake")]
+[SerializeField] private float shakeDuration = 0.15f;
+[SerializeField] private float shakeStrength = 0.15f;
+
+private float shakeTimer;
+
     private Camera cam;
     private bool hasRegisteredOffscreenLoss;
 
@@ -29,7 +35,8 @@ public sealed class CameraFollower : MonoBehaviour
             return;
 
         FollowLeader();
-        CheckOffscreenLoss();
+ApplyShake();
+CheckOffscreenLoss();
     }
 
     private void FollowLeader()
@@ -80,4 +87,20 @@ public sealed class CameraFollower : MonoBehaviour
             transform.position = new Vector3(startX, verticalCenter, transform.position.z);
         }
     }
+
+    public void Shake()
+{
+    shakeTimer = shakeDuration;
+}
+
+private void ApplyShake()
+{
+    if (shakeTimer <= 0f)
+        return;
+
+    shakeTimer -= Time.deltaTime;
+
+    Vector3 randomOffset = Random.insideUnitCircle * shakeStrength;
+    transform.position += randomOffset;
+}
 }

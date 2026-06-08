@@ -38,12 +38,14 @@ public sealed class RaceManager : MonoBehaviour
         ScoreChanged?.Invoke();
     }
 
-    public void StartNewRound()
-    {
-        CurrentRound++;
-        hasRoundWinner = false;
-        IsRoundActive = true;
-    }
+  public void StartNewRound()
+{
+    CurrentRound++;
+    hasRoundWinner = false;
+    IsRoundActive = true;
+
+    ScoreChanged?.Invoke();
+}
 
     public void RegisterWinner(PlayerId winner)
     {

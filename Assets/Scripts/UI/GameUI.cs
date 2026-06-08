@@ -4,10 +4,7 @@ using UnityEngine;
 
 public sealed class GameUI : MonoBehaviour
 {
-    [Header("References")]
     [SerializeField] private RaceManager raceManager;
-
-    [Header("UI")]
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text messageText;
 
@@ -43,15 +40,10 @@ public sealed class GameUI : MonoBehaviour
         messageText.text = $"{winner} wins the round!";
     }
 
-    private void ShowMatchWinner(PlayerId winner)
-    {
-        messageText.text = $"{winner} wins the match!";
-    }
-
-    public void ClearMessage()
-    {
-        messageText.text = "";
-    }
+  private void ShowMatchWinner(PlayerId winner)
+{
+    messageText.text = $"{winner} wins the match!\nPress Space to restart";
+}
 
     public IEnumerator ShowCountdown()
     {
@@ -68,5 +60,10 @@ public sealed class GameUI : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         ClearMessage();
+    }
+
+    public void ClearMessage()
+    {
+        messageText.text = "";
     }
 }

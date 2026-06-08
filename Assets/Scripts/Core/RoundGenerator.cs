@@ -44,6 +44,9 @@ public sealed class RoundGenerator : MonoBehaviour
     [Header("Generation")]
     [SerializeField] private int obstacleCount = 7;
     [SerializeField] private int interactionPointCount = 5;
+    [SerializeField] private int minimumInteractionPointCount = 5;
+[SerializeField] private float interactionSpawnChance = 0.5f;
+[SerializeField] private float minDistanceFromObstacle = 2.5f;
 
     [Header("Elephant Obstacle Placement")]
 [SerializeField] private float obstacleY = 1.05f;
@@ -164,7 +167,70 @@ private bool IsTooCloseToObstacle(float x, float minDistance)
     return false;
 }
 
-    private void GenerateInteractionPairs()
+private void GenerateInteractionPairs()
+{
+    List<float> candidateXs = new();
+
+    foreach (var connector in generatedConnectors)
+    {
+        candidateXs.Add(connector.x);
+    }
+
+    Shuffle(candidateXs);
+
+    List<float> selectedXs = new();
+
+    // Pass 1: random coin flip
+    foreach (float x in candidateXs)
+    {
+        if (IsTooCloseToObstacle(x, minDistanceFromObstacle))
+            continue;
+
+        if (Random.value <= interactionSpawnChance)
+            selectedXs.Add(x);
+    }
+
+    // Pass 2: guarantee at least 5
+    foreach (float x in candidateXs)
+    {
+        if (selectedXs.Count >= minimumInteractionPointCount)
+            break;
+
+        if (selectedXs.Contains(x))
+            continue;
+
+        if (IsTooCloseToObstacle(x, minDistanceFromObstacle))
+            continue;
+
+        selectedXs.Add(x);
+    }
+
+    // Pass 3: if obstacles blocked too many, allow close ones anyway
+    foreach (float x in candidateXs)
+    {
+        if (selectedXs.Count >= minimumInteractionPointCount)
+            break;
+
+        if (selectedXs.Contains(x))
+            continue;
+
+        selectedXs.Add(x);
+    }
+
+    if (selectedXs.Count < minimumInteractionPointCount)
+    {
+        Debug.LogWarning(
+            $"Only generated {selectedXs.Count} interaction points because there were not enough connectors."
+        );
+    }
+
+    for (int i = 0; i < selectedXs.Count; i++)
+    {
+        CreateInteractionPair(selectedXs[i], i);
+    }
+}
+
+private void CreateInteractionPair(float x, int index)
 {
     Color[] colors =
     {
@@ -175,113 +241,84 @@ private bool IsTooCloseToObstacle(float x, float minDistance)
         Color.cyan
     };
 
-    List<float> validInteractionXs = new();
-    const float minDistanceFromObstacle = 2.5f;
+    Color color = colors[index % colors.Length];
 
-    foreach (var connector in generatedConnectors)
-    {
-        if (connector.connectorType == 0)
-        {
-            validInteractionXs.Add(connector.x);
-        }
-    }
+    GameObject controllerObject = new GameObject($"SharedInteraction_{index}");
+    controllerObject.transform.SetParent(transform, false);
 
-    for (int i = 0; i < interactionPointCount; i++)
-    {
-        float x;
+    SharedInteractionController controller =
+        controllerObject.AddComponent<SharedInteractionController>();
 
-        if (validInteractionXs.Count > 0)
-        {
-            int randomIndex = Random.Range(0, validInteractionXs.Count);
-            x = validInteractionXs[randomIndex];
-validInteractionXs.RemoveAt(randomIndex);
-
-if (IsTooCloseToObstacle(x, minDistanceFromObstacle))
-{
-    i--;
-    continue;
-}
-        }
-        else
-{
-    Debug.LogWarning(
-        $"Only generated {i} interaction points because there were not enough top connectors."
+    controller.SetupReferences(
+        birdAttackPrefab,
+        elephant.transform,
+        screenObscurer,
+        this,
+        mouse.transform
     );
 
-    break;
+    spawnedObjects.Add(controllerObject);
+
+    GameObject elephantPointObject = Spawn(
+        interactionAccessPointPrefab,
+        new Vector3(x, 0.85f, 0f)
+    );
+
+    Vector3 mouseInteractionPosition = new Vector3(
+        x,
+        groundBuffer + mouseHeightBuffer,
+        0f
+    );
+
+    GameObject mousePointObject = Spawn(
+        interactionAccessPointPrefab,
+        mouseInteractionPosition
+    );
+
+    Spawn(
+        mouseInteractionBlockPrefab != null
+            ? mouseInteractionBlockPrefab
+            : mazeWallPrefab,
+        new Vector3(
+            mouseInteractionPosition.x - mouseInteractionBlockSpacing,
+            mouseInteractionPosition.y,
+            0f
+        )
+    );
+
+    Spawn(
+        mouseInteractionBlockPrefab != null
+            ? mouseInteractionBlockPrefab
+            : mazeWallPrefab,
+        new Vector3(
+            mouseInteractionPosition.x + mouseInteractionBlockSpacing,
+            mouseInteractionPosition.y,
+            0f
+        )
+    );
+
+    InteractionAccessPoint elephantPoint =
+        elephantPointObject.GetComponent<InteractionAccessPoint>();
+
+    InteractionAccessPoint mousePoint =
+        mousePointObject.GetComponent<InteractionAccessPoint>();
+
+    elephantPoint.Initialize(PlayerId.Elephant, controller, color);
+    mousePoint.Initialize(PlayerId.Mouse, controller, color);
+
+    controller.Initialize(elephantPoint, mousePoint);
 }
+private void Shuffle(List<float> list)
+{
+    for (int i = 0; i < list.Count; i++)
+    {
+        int randomIndex = Random.Range(i, list.Count);
 
-        Color color = colors[i % colors.Length];
-
-        GameObject controllerObject = new GameObject($"SharedInteraction_{i}");
-        controllerObject.transform.SetParent(transform, false);
-
-        SharedInteractionController controller =
-            controllerObject.AddComponent<SharedInteractionController>();
-
-           controller.SetupReferences(
-    birdAttackPrefab,
-    elephant.transform,
-    screenObscurer,
-    this,
-    mouse.transform
-);
-
-        spawnedObjects.Add(controllerObject);
-
-        GameObject elephantPointObject = Spawn(
-            interactionAccessPointPrefab,
-            new Vector3(x, 0.85f, 0f)
-        );
-
-
-Vector3 mouseInteractionPosition = new Vector3(
-    x ,
-    groundBuffer + mouseHeightBuffer / 2f,
-    0f
-);
-
-GameObject mousePointObject = Spawn(
-    interactionAccessPointPrefab,
-    mouseInteractionPosition
-);
-
-Spawn(
-    mouseInteractionBlockPrefab != null
-        ? mouseInteractionBlockPrefab
-        : mazeWallPrefab,
-    new Vector3(
-        mouseInteractionPosition.x - mouseInteractionBlockSpacing,
-        mouseInteractionPosition.y,
-        0f
-    )
-);
-
-Spawn(
-    mouseInteractionBlockPrefab != null
-        ? mouseInteractionBlockPrefab
-        : mazeWallPrefab,
-    new Vector3(
-        mouseInteractionPosition.x + mouseInteractionBlockSpacing,
-        mouseInteractionPosition.y,
-        0f
-    )
-);
-
-        InteractionAccessPoint elephantPoint =
-            elephantPointObject.GetComponent<InteractionAccessPoint>();
-
-        InteractionAccessPoint mousePoint =
-            mousePointObject.GetComponent<InteractionAccessPoint>();
-
-        elephantPoint.Initialize(PlayerId.Elephant, controller, color);
-        mousePoint.Initialize(PlayerId.Mouse, controller, color);
-
-        controller.Initialize(elephantPoint, mousePoint);
+        float temp = list[i];
+        list[i] = list[randomIndex];
+        list[randomIndex] = temp;
     }
 }
-// private readonly List<MazeWall> mazeWalls = new();
-
 private void GenerateMouseMazeWalls()
 {
     const float segmentLength = 7f;
