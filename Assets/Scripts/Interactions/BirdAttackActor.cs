@@ -7,6 +7,8 @@ public sealed class BirdAttackActor : MonoBehaviour
     [SerializeField] private Transform elephant;
     [SerializeField] private ScreenObscurer screenObscurer;
 
+    [SerializeField] private GameObject eggPrefab;
+
     [Header("Movement")]
     [SerializeField] private float speed = 8f;
     [SerializeField] private float heightAboveElephant = 4f;
@@ -16,6 +18,8 @@ public sealed class BirdAttackActor : MonoBehaviour
     [Header("Timing")]
     [SerializeField] private float eggDropDistance = 0.6f;
     [SerializeField] private float obscureDuration = 2.5f;
+
+
 
     private bool eggDropped;
 
@@ -73,11 +77,32 @@ public sealed class BirdAttackActor : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void DropEgg()
-    {
-        Debug.Log("Egg dropped!");
+   private void DropEgg()
+{
+    Debug.Log("Egg dropped!");
 
+    if (eggPrefab == null)
+    {
         if (screenObscurer != null)
             screenObscurer.Obscure(obscureDuration);
+
+        return;
     }
+
+    GameObject egg = Instantiate(
+        eggPrefab,
+        transform.position,
+        Quaternion.identity
+    );
+
+    EggDropActor eggDrop = egg.GetComponent<EggDropActor>();
+
+    if (eggDrop != null)
+    {
+        eggDrop.Initialize(
+            screenObscurer,
+            obscureDuration
+        );
+    }
+}
 }
