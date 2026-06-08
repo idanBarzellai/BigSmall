@@ -16,10 +16,12 @@ public sealed class CameraFollower : MonoBehaviour
     [SerializeField] private float loseBuffer = 1.5f;
 
     [Header("Shake")]
-[SerializeField] private float shakeDuration = 0.15f;
-[SerializeField] private float shakeStrength = 0.15f;
+[SerializeField] private float earthquakeShakeDuration = 0.4f;
+[SerializeField] private float earthquakeShakeStrength = 0.25f;
 
 private float shakeTimer;
+private float shakeStrength;
+
 
     private Camera cam;
     private bool hasRegisteredOffscreenLoss;
@@ -88,10 +90,6 @@ CheckOffscreenLoss();
         }
     }
 
-    public void Shake()
-{
-    shakeTimer = shakeDuration;
-}
 
 private void ApplyShake()
 {
@@ -100,7 +98,12 @@ private void ApplyShake()
 
     shakeTimer -= Time.deltaTime;
 
-    Vector3 randomOffset = Random.insideUnitCircle * shakeStrength;
-    transform.position += randomOffset;
+    transform.position +=
+        (Vector3)(Random.insideUnitCircle * shakeStrength);
+}
+public void TriggerEarthquakeShake()
+{
+    shakeTimer = earthquakeShakeDuration;
+    shakeStrength = earthquakeShakeStrength;
 }
 }

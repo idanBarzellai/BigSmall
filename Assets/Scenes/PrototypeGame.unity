@@ -573,6 +573,8 @@ MonoBehaviour:
   smoothSpeed: 5
   verticalCenter: 0
   loseBuffer: 1.5
+  earthquakeShakeDuration: 0.4
+  earthquakeShakeStrength: 0.25
 --- !u!114 &693823824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,6 +660,7 @@ MonoBehaviour:
   finishLinePrefab: {fileID: 4016434665711424873, guid: 92767196081f0c549920174bf229c224, type: 3}
   mouseConnectorPrefab: {fileID: 4927187283108857601, guid: 36f2d49c555fe594881f1fa662b8fa93, type: 3}
   mouseMazeBoundaryPrefab: {fileID: 9017325889041225302, guid: aaedb206b3a96744086f921a67b017bf, type: 3}
+  cameraFollower: {fileID: 693823823}
   raceManager: {fileID: 777200355}
   trackLength: 80
   obstacleCount: 7

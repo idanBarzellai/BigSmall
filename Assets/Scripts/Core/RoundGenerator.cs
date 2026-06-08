@@ -32,6 +32,7 @@ public sealed class RoundGenerator : MonoBehaviour
     [SerializeField] private GameObject finishLinePrefab;
     [SerializeField] private GameObject mouseConnectorPrefab;
     [SerializeField] private GameObject mouseMazeBoundaryPrefab;
+    [SerializeField] private CameraFollower cameraFollower;
     private readonly List<MouseMazeSegment> mouseMazeSegments = new();
     private readonly List<(float x, int connectorType)> generatedConnectors = new();
 
@@ -398,6 +399,10 @@ private void GenerateMouseMazeWalls()
 
 public void TriggerEarthquake(float mouseX)
 {
+    if (cameraFollower != null)
+{
+    cameraFollower.TriggerEarthquakeShake();
+}
     float[] laneY =
 {
     mouseTopLaneY,
