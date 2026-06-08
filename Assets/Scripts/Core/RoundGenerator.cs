@@ -116,7 +116,7 @@ obstacleXs.Clear();
         mouseTopLaneY = groundBuffer  + mouseHeightBuffer + laneHeight / 2f;
         mouseMiddleLaneY = mouseTopLaneY + mouseHeightBuffer + laneHeight;
         mouseBottomLaneY = mouseMiddleLaneY  + mouseHeightBuffer + laneHeight;
-        bottomBoundaryY = -5.5f;
+        bottomBoundaryY = -8f;
         topMiddleConnectorY = mouseTopLaneY +  laneHeight / 2f + mouseHeightBuffer /2f;
         middleBottomConnectorY = mouseMiddleLaneY  +  laneHeight / 2f + mouseHeightBuffer /2f;
     }

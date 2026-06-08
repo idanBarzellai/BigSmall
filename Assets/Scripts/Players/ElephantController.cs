@@ -26,6 +26,7 @@ public sealed class ElephantController : MonoBehaviour
 private float nextAllowedJumpTime;
 
     public float CurrentMoveSpeed => currentMoveSpeed;
+    private float moveInput;
 
     private void Awake()
     {
@@ -59,6 +60,8 @@ private float nextAllowedJumpTime;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.35f, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
+
+    moveInput = inputRouter.GetElephantMoveAxis();
 }
 
     private void FixedUpdate()
@@ -66,7 +69,6 @@ private float nextAllowedJumpTime;
         if (!canMove || inputRouter == null)
             return;
 
-        float moveInput = inputRouter.GetElephantMoveAxis();
 
         if (Mathf.Abs(moveInput) > 0.01f)
         {

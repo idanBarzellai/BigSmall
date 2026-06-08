@@ -33,15 +33,19 @@ public sealed class CameraFollower : MonoBehaviour
     }
 
     private void FollowLeader()
-    {
-        Transform leader = elephant.position.x >= mouse.position.x ? elephant : mouse;
+{
+    float targetX = Mathf.Max(elephant.position.x, mouse.position.x);
 
-        Vector3 current = transform.position;
-        Vector3 target = new Vector3(leader.position.x, verticalCenter, current.z);
+    // Softer version: bias toward leader, but don't completely ignore trailer.
+    float midpointX = (elephant.position.x + mouse.position.x) * 0.5f;
+    float cameraX = Mathf.Lerp(midpointX, targetX, 0.65f);
 
-        float t = 1f - Mathf.Exp(-smoothSpeed * Time.deltaTime);
-        transform.position = Vector3.Lerp(current, target, t);
-    }
+    Vector3 current = transform.position;
+    Vector3 target = new Vector3(cameraX, verticalCenter, current.z);
+
+    float t = 1f - Mathf.Exp(-smoothSpeed * Time.deltaTime);
+    transform.position = Vector3.Lerp(current, target, t);
+}
 
     private void CheckOffscreenLoss()
     {
