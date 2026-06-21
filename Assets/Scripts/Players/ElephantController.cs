@@ -19,11 +19,16 @@ public sealed class ElephantController : MonoBehaviour
     [Header("Input")]
     [SerializeField] private SharedKeyboardInputRouter inputRouter;
 
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private Transform image;
+
     private Rigidbody2D rb;
     private bool canMove = true;
     private float currentMoveSpeed;
     private bool wasGrounded;
 private float nextAllowedJumpTime;
+    private Vector3 imageBaseScale;
 
     public float CurrentMoveSpeed => currentMoveSpeed;
     private float moveInput;
@@ -33,6 +38,15 @@ private float nextAllowedJumpTime;
         rb = GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
         currentMoveSpeed = minMoveSpeed;
+
+        if (animator == null)
+    animator = GetComponentInChildren<Animator>();
+
+        if (image == null && animator != null)
+            image = animator.transform;
+
+        if (image != null)
+            imageBaseScale = image.localScale;
     }
 
     private void Update()
@@ -59,9 +73,13 @@ private float nextAllowedJumpTime;
 
         rb.linearVelocity = new Vector2(rb.linearVelocity.x * 0.35f, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
+        if (animator != null)
+    animator.SetTrigger("jump");
     }
 
     moveInput = inputRouter.GetElephantMoveAxis();
+    UpdateImageDirection(moveInput);
 }
 
     private void FixedUpdate()
@@ -74,6 +92,8 @@ private float nextAllowedJumpTime;
         {
             currentMoveSpeed += accelerationRate * Time.fixedDeltaTime;
 currentMoveSpeed = Mathf.Clamp(currentMoveSpeed, obstacleRecoverySpeed, maxMoveSpeed);
+
+
         }
         else
         {
@@ -81,6 +101,9 @@ currentMoveSpeed = Mathf.Clamp(currentMoveSpeed, obstacleRecoverySpeed, maxMoveS
         }
 
         rb.linearVelocity = new Vector2(moveInput * currentMoveSpeed, rb.linearVelocity.y);
+
+        if (animator != null)
+    animator.SetFloat("movespeed", Mathf.Abs(rb.linearVelocity.x));
     }
 
     public void ResetMomentum()
@@ -116,5 +139,53 @@ currentMoveSpeed = Mathf.Clamp(currentMoveSpeed, obstacleRecoverySpeed, maxMoveS
     public void CrashMomentum()
 {
     currentMoveSpeed = obstacleRecoverySpeed;
+    if (animator != null)
+    animator.SetTrigger("hit");
+}
+
+public void SetReadyAnimation(bool value)
+{
+    if (animator != null)
+        animator.SetBool("isready", value);
+}
+
+public void PlayWinAnimation()
+{
+    if (animator != null)
+        animator.SetTrigger("win");
+}
+
+public void PlayLoseAnimation()
+{
+    if (animator != null)
+        animator.SetTrigger("lose");
+}
+
+public void ResetAnimationForNewRound()
+{
+    if (animator == null)
+        return;
+
+    animator.ResetTrigger("win");
+    animator.ResetTrigger("lose");
+    animator.ResetTrigger("jump");
+    animator.ResetTrigger("hit");
+
+    animator.SetFloat("movespeed", 0f);
+    animator.SetBool("isready", false);
+
+    animator.Play("empty", 0, 0f);
+}
+
+private void UpdateImageDirection(float direction)
+{
+    if (image == null || Mathf.Abs(direction) < 0.01f)
+        return;
+
+    image.localScale = new Vector3(
+        Mathf.Abs(imageBaseScale.x) * (direction < 0f ? -1f : 1f),
+        imageBaseScale.y,
+        imageBaseScale.z
+    );
 }
 }

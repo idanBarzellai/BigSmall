@@ -18,7 +18,7 @@ using UnityEngine;
 
         public bool IsElephantJumpPressed()
         {
-            return Input.GetKeyDown(KeyCode.Space);
+            return Input.GetKeyDown(KeyCode.W);
         }
 
         public Vector2 GetMouseMoveInput()
@@ -42,4 +42,21 @@ using UnityEngine;
 
             return input;
         }
+
+        public bool IsMouseReadyPressed()
+{
+     return Input.GetKeyDown(KeyCode.LeftArrow) ||
+           Input.GetKeyDown(KeyCode.RightArrow) ||
+           Input.GetKeyDown(KeyCode.UpArrow) ||
+           Input.GetKeyDown(KeyCode.DownArrow);
+    
+}
+
+public bool IsElephantReadyPressed()
+{
+    return Input.GetKeyDown(KeyCode.A) ||
+           Input.GetKeyDown(KeyCode.S) ||
+           Input.GetKeyDown(KeyCode.W) ||
+           Input.GetKeyDown(KeyCode.D);
+}
     }

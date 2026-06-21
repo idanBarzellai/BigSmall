@@ -14,7 +14,14 @@ public sealed class GameManager : MonoBehaviour
     [Header("Spawn Positions")]
     [SerializeField] private Vector3 elephantStartPosition = new Vector3(0f, 2f, 0f);
     [SerializeField] private Vector3 mouseStartPosition = new Vector3(0f, -2f, 0f);
+[SerializeField] private SharedKeyboardInputRouter inputRouter;
 
+[Header("Round End")]
+[SerializeField] private float roundEndDelay = 3f;
+
+private bool elephantReady;
+private bool mouseReady;
+private bool waitingForReady;
     private bool matchEnded;
 
     private void Awake()
@@ -25,17 +32,63 @@ public sealed class GameManager : MonoBehaviour
 
     private void Start()
     {
-        StartNewMatch();
+    PrepareNewMatch();
     }
 
+private void PrepareNewMatch()
+{
+    GenerateAndPrepareRound();
+    BeginReadyPhase();
+}
+private void BeginReadyPhase()
+{
+    elephantReady = false;
+    mouseReady = false;
+    waitingForReady = true;
+
+    elephant.SetReadyAnimation(false);
+    mouse.SetReadyAnimation(false);
+
+    elephant.SetCanMove(false);
+    mouse.SetCanMove(false);
+}
 
 private void Update()
 {
-    if (matchEnded && Input.GetKeyDown(KeyCode.Space))
+    if (!waitingForReady)
+        return;
+
+    if (!mouseReady && inputRouter.IsMouseReadyPressed())
     {
-        matchEnded = false;
-        StartNewMatch();
+        mouseReady = true;
+        mouse.SetReadyAnimation(true);
     }
+
+    if (!elephantReady && inputRouter.IsElephantReadyPressed())
+    {
+        elephantReady = true;
+        elephant.SetReadyAnimation(true);
+    }
+
+    if (mouseReady && elephantReady)
+    {
+        waitingForReady = false;
+        StartCoroutine(StartPreparedRoundWithCountdown());
+    }
+}
+
+private IEnumerator StartPreparedRoundWithCountdown()
+{
+    if (gameUI != null)
+    {
+        gameUI.ClearMessage();
+        yield return gameUI.ShowCountdown();
+    }
+
+    raceManager.StartNewRound();
+
+    elephant.SetCanMove(true);
+    mouse.SetCanMove(true);
 }
 
     private void OnDestroy()
@@ -44,13 +97,9 @@ private void Update()
         raceManager.MatchEnded -= HandleMatchEnded;
     }
 
-  private void StartNewMatch()
-{
-    raceManager.StartNewMatch();
-    StartCoroutine(GenerateAndStartRoundWithCountdown());
-}
 
-   private void GenerateAndPrepareRound()
+
+private void GenerateAndPrepareRound()
 {
     roundGenerator.GenerateRound();
 
@@ -60,22 +109,51 @@ private void Update()
     elephant.SetCanMove(false);
     mouse.SetCanMove(false);
 
+    elephant.ResetAnimationForNewRound();
+    mouse.ResetAnimationForNewRound();
+
     cameraFollower.ResetForNewRound();
 }
 
-    private void HandleRoundEnded(PlayerId winner)
+private void HandleRoundEnded(PlayerId winner)
+{
+    StartCoroutine(RoundEndRoutine(winner));
+}
+
+private IEnumerator RoundEndRoutine(PlayerId winner)
+{
+    elephant.SetCanMove(false);
+    mouse.SetCanMove(false);
+
+    if (winner == PlayerId.Elephant)
     {
-        Debug.Log($"Round Winner: {winner}");
-
-        elephant.SetCanMove(false);
-        mouse.SetCanMove(false);
-
-        Invoke(nameof(StartNextRound), 2f);
+        elephant.PlayWinAnimation();
+        mouse.PlayLoseAnimation();
     }
+    else
+    {
+        mouse.PlayWinAnimation();
+        elephant.PlayLoseAnimation();
+    }
+
+    yield return new WaitForSeconds(roundEndDelay);
+
+    GenerateAndPrepareRound();
+    BeginReadyPhase();
+}
 
  private void HandleMatchEnded(PlayerId winner)
 {
-    Debug.Log($"Match Winner: {winner}");
+     if (winner == PlayerId.Elephant)
+    {
+        elephant.PlayWinAnimation();
+        mouse.PlayLoseAnimation();
+    }
+    else
+    {
+        mouse.PlayWinAnimation();
+        elephant.PlayLoseAnimation();
+    }
 
     elephant.SetCanMove(false);
     mouse.SetCanMove(false);
@@ -83,23 +161,5 @@ private void Update()
     matchEnded = true;
 }
 
-private void StartNextRound()
-{
-    raceManager.StartNewRound();
-    StartCoroutine(GenerateAndStartRoundWithCountdown());
-}
 
-private IEnumerator GenerateAndStartRoundWithCountdown()
-{
-    GenerateAndPrepareRound();
-
-    if (gameUI != null)
-    {
-        gameUI.ClearMessage();
-        yield return gameUI.ShowCountdown();
-    }
-
-    elephant.SetCanMove(true);
-    mouse.SetCanMove(true);
-}
 }

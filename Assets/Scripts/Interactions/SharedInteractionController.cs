@@ -67,10 +67,15 @@ Transform mouseTransform)
 
     private void TriggerBirdAttack()
 {
+    MouseController mouseController = mouse.GetComponent<MouseController>();
+if (mouseController != null)
+    mouseController.PlayBirdCallAnimation();
     Debug.Log("BIRD ATTACK!");
 
     if (birdAttackPrefab == null)
         return;
+
+        
 
     GameObject bird = Instantiate(birdAttackPrefab);
 
