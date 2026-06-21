@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,9 +29,11 @@ public sealed class RoundGenerator : MonoBehaviour
 
 [SerializeField] private ScreenObscurer screenObscurer;
     [SerializeField] private GameObject mazeWallPrefab;
+    [SerializeField] private Sprite[] mazeWallSprites;
     [SerializeField] private GameObject earthquakeWallPrefab;
     [SerializeField] private GameObject finishLinePrefab;
     [SerializeField] private GameObject mouseConnectorPrefab;
+    [SerializeField] private Sprite[] mouseConnectorSprites;
     [SerializeField] private GameObject mouseMazeBoundaryPrefab;
     [SerializeField] private CameraFollower cameraFollower;
     private readonly List<MouseMazeSegment> mouseMazeSegments = new();
@@ -58,6 +61,10 @@ public sealed class RoundGenerator : MonoBehaviour
 [Header("Mouse Maze Wall Placement")]
 [SerializeField] private float mazeWallWidthMultiplier = 0.85f;
 [SerializeField] private float mazeWallYOffset = 0.25f;
+
+[Header("Earthquake Sprite Animation")]
+[SerializeField] private Sprite[] earthquakeAnimationFrames;
+[SerializeField] private float earthquakeFramesPerSecond = 12f;
 
 [Header("Mouse Interaction Dead Ends")]
 [SerializeField] private GameObject mouseInteractionBlockPrefab;
@@ -381,17 +388,21 @@ private void GenerateMouseMazeWalls()
 
             if (connectorType == 0)
             {
-                Spawn(
+                GameObject connector = Spawn(
                     mouseConnectorPrefab,
                     new Vector3(connectorX, topMiddleConnectorY, 0f)
                 );
+
+                ApplyRandomSprite(connector, mouseConnectorSprites);
             }
             else
             {
-                Spawn(
+                GameObject connector = Spawn(
                     mouseConnectorPrefab,
                     new Vector3(connectorX, middleBottomConnectorY, 0f)
                 );
+
+                ApplyRandomSprite(connector, mouseConnectorSprites);
             }
         }
     }
@@ -427,6 +438,8 @@ public void TriggerEarthquake(float mouseX)
         );
 
         blocker.name = $"EarthquakeBlocker_Lane_{segment.openLane}";
+
+        StartCoroutine(PlayEarthquakeAnimation(blocker));
 
         segment.earthquakeBlocked = true;
 
@@ -464,8 +477,52 @@ float yOffset =
     )
 );
 
+    ApplyRandomMazeWallSprite(wall);
+
     wall.name =
         $"MazeWall_S{segment}_L{lane}_{opening}";
+}
+
+private void ApplyRandomMazeWallSprite(GameObject wall)
+{
+    ApplyRandomSprite(wall, mazeWallSprites);
+}
+
+private void ApplyRandomSprite(GameObject target, Sprite[] sprites)
+{
+    if (target == null || sprites == null || sprites.Length == 0)
+        return;
+
+    SpriteRenderer renderer = target.GetComponentInChildren<SpriteRenderer>();
+
+    if (renderer != null)
+        renderer.sprite = sprites[Random.Range(0, sprites.Length)];
+}
+
+private IEnumerator PlayEarthquakeAnimation(GameObject blocker)
+{
+    if (blocker == null ||
+        earthquakeAnimationFrames == null ||
+        earthquakeAnimationFrames.Length == 0)
+        yield break;
+
+    SpriteRenderer renderer = blocker.GetComponentInChildren<SpriteRenderer>();
+
+    if (renderer == null)
+        yield break;
+
+    float frameDuration = 1f / Mathf.Max(earthquakeFramesPerSecond, 1f);
+
+    foreach (Sprite frame in earthquakeAnimationFrames)
+    {
+        if (blocker == null)
+            yield break;
+
+        if (frame != null)
+            renderer.sprite = frame;
+
+        yield return new WaitForSeconds(frameDuration);
+    }
 }
 private void GenerateMouseMazeBoundaries()
 {

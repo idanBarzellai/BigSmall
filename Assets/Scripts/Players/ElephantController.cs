@@ -29,6 +29,7 @@ public sealed class ElephantController : MonoBehaviour
     private bool wasGrounded;
 private float nextAllowedJumpTime;
     private Vector3 imageBaseScale;
+    private Quaternion imageBaseRotation;
 
     public float CurrentMoveSpeed => currentMoveSpeed;
     private float moveInput;
@@ -46,7 +47,10 @@ private float nextAllowedJumpTime;
             image = animator.transform;
 
         if (image != null)
+        {
             imageBaseScale = image.localScale;
+            imageBaseRotation = image.localRotation;
+        }
     }
 
     private void Update()
@@ -163,6 +167,12 @@ public void PlayLoseAnimation()
 
 public void ResetAnimationForNewRound()
 {
+    if (image != null)
+    {
+        image.localScale = imageBaseScale;
+        image.localRotation = imageBaseRotation;
+    }
+
     if (animator == null)
         return;
 

@@ -14,13 +14,18 @@ public sealed class MouseController : MonoBehaviour
     private Vector2 moveInput;
     private bool canMove = true;
     private float birdCallLockUntil;
+    private Vector3 mouseBaseScale;
+    private Quaternion mouseBaseRotation;
     private Vector3 imageBaseScale;
+    private Quaternion imageBaseRotation;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
         rb.freezeRotation = true;
+        mouseBaseScale = transform.localScale;
+        mouseBaseRotation = transform.localRotation;
 
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
@@ -29,7 +34,10 @@ public sealed class MouseController : MonoBehaviour
             image = animator.transform;
 
         if (image != null)
+        {
             imageBaseScale = image.localScale;
+            imageBaseRotation = image.localRotation;
+        }
     }
 
     private void Update()
@@ -41,7 +49,7 @@ public sealed class MouseController : MonoBehaviour
         }
 
         moveInput = inputRouter.GetMouseMoveInput();
-        UpdateImageDirection(moveInput);
+        UpdateMouseDirection(moveInput);
     }
 
     private void FixedUpdate()
@@ -98,6 +106,8 @@ public void PlayBirdCallAnimation()
 
     moveInput = Vector2.zero;
 
+    transform.localRotation = mouseBaseRotation;
+
     if (rb != null)
         rb.linearVelocity = Vector2.zero;
 
@@ -108,6 +118,15 @@ public void PlayBirdCallAnimation()
 public void ResetAnimationForNewRound()
 {
     birdCallLockUntil = 0f;
+
+    if (image != null)
+    {
+        image.localScale = imageBaseScale;
+        image.localRotation = imageBaseRotation;
+    }
+
+    transform.localScale = mouseBaseScale;
+    transform.localRotation = mouseBaseRotation;
 
     if (animator == null)
         return;
@@ -127,9 +146,9 @@ private bool CanMoveNow()
     return canMove && Time.time >= birdCallLockUntil;
 }
 
-private void UpdateImageDirection(Vector2 direction)
+private void UpdateMouseDirection(Vector2 direction)
 {
-    if (image == null || direction.sqrMagnitude < 0.001f)
+    if (direction.sqrMagnitude < 0.001f)
         return;
 
     bool facingLeft = direction.x < -0.01f;
@@ -145,11 +164,12 @@ private void UpdateImageDirection(Vector2 direction)
         angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
     }
 
-    image.localRotation = Quaternion.Euler(0f, 0f, angle);
-    image.localScale = new Vector3(
-        Mathf.Abs(imageBaseScale.x) * (facingLeft ? -1f : 1f),
-        imageBaseScale.y,
-        imageBaseScale.z
+    transform.localRotation =
+        mouseBaseRotation * Quaternion.Euler(0f, 0f, angle);
+    transform.localScale = new Vector3(
+        Mathf.Abs(mouseBaseScale.x) * (facingLeft ? -1f : 1f),
+        mouseBaseScale.y,
+        mouseBaseScale.z
     );
 }
 }

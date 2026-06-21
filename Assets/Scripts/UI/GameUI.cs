@@ -1,69 +1,142 @@
 using System.Collections;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public sealed class GameUI : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private RaceManager raceManager;
-    [SerializeField] private TMP_Text scoreText;
-    [SerializeField] private TMP_Text messageText;
+
+    [Header("Center Images")]
+    [SerializeField] private Image topCenterImage;
+    [SerializeField] private Image bottomCenterImage;
+    [SerializeField] private Sprite topReadySprite;
+    [SerializeField] private Sprite bottomReadySprite;
+
+    [Header("Countdown (3, 2, 1)")]
+    [SerializeField] private Sprite[] countdownSprites;
+    [SerializeField] private float countdownStepDuration = 1f;
+
+    [Header("Trophy Win Images")]
+    [SerializeField] private Image trophyImagePrefab;
+    [SerializeField] private RectTransform elephantTrophyContainer;
+    [SerializeField] private RectTransform mouseTrophyContainer;
+
+    private readonly List<Image> elephantTrophies = new();
+    private readonly List<Image> mouseTrophies = new();
 
     private void OnEnable()
     {
-        raceManager.ScoreChanged += UpdateScore;
-        raceManager.RoundEnded += ShowRoundWinner;
-        raceManager.MatchEnded += ShowMatchWinner;
+        if (raceManager != null)
+            raceManager.ScoreChanged += UpdateWinImages;
     }
 
     private void OnDisable()
     {
-        raceManager.ScoreChanged -= UpdateScore;
-        raceManager.RoundEnded -= ShowRoundWinner;
-        raceManager.MatchEnded -= ShowMatchWinner;
+        if (raceManager != null)
+            raceManager.ScoreChanged -= UpdateWinImages;
     }
 
     private void Start()
     {
-        UpdateScore();
-        ClearMessage();
+        UpdateWinImages();
+        ShowReadyImages();
     }
 
-    private void UpdateScore()
+    public void ShowReadyImages()
     {
-        scoreText.text =
-            $"Round {raceManager.CurrentRound}\n" +
-            $"Elephant {raceManager.ElephantWins} - {raceManager.MouseWins} Mouse";
+        SetCenterImage(topCenterImage, topReadySprite, true);
+        SetCenterImage(bottomCenterImage, bottomReadySprite, true);
     }
-
-    private void ShowRoundWinner(PlayerId winner)
-    {
-        messageText.text = $"{winner} wins the round!";
-    }
-
-  private void ShowMatchWinner(PlayerId winner)
-{
-    messageText.text = $"{winner} wins the match!\nPress Space to restart";
-}
 
     public IEnumerator ShowCountdown()
     {
-        messageText.text = "3";
-        yield return new WaitForSeconds(1f);
+        if (countdownSprites == null || countdownSprites.Length == 0)
+        {
+            ClearMessage();
+            yield break;
+        }
 
-        messageText.text = "2";
-        yield return new WaitForSeconds(1f);
+        SetCenterImagesActive(true);
 
-        messageText.text = "1";
-        yield return new WaitForSeconds(1f);
+        foreach (Sprite countdownSprite in countdownSprites)
+        {
+            if (countdownSprite == null)
+                continue;
 
-        messageText.text = "GO!";
-        yield return new WaitForSeconds(0.5f);
+            if (topCenterImage != null)
+                topCenterImage.sprite = countdownSprite;
+
+            if (bottomCenterImage != null)
+                bottomCenterImage.sprite = countdownSprite;
+
+            yield return new WaitForSeconds(countdownStepDuration);
+        }
 
         ClearMessage();
     }
 
     public void ClearMessage()
     {
-        messageText.text = "";
+        SetCenterImagesActive(false);
+    }
+
+    private void UpdateWinImages()
+    {
+        if (raceManager == null)
+            return;
+
+        SetTrophyCount(
+            elephantTrophies,
+            elephantTrophyContainer,
+            raceManager.ElephantWins
+        );
+
+        SetTrophyCount(
+            mouseTrophies,
+            mouseTrophyContainer,
+            raceManager.MouseWins
+        );
+    }
+
+    private void SetTrophyCount(
+        List<Image> trophies,
+        RectTransform container,
+        int visibleCount)
+    {
+        if (trophyImagePrefab == null || container == null)
+            return;
+
+        while (trophies.Count < visibleCount)
+        {
+            Image trophy = Instantiate(trophyImagePrefab, container);
+            trophy.gameObject.SetActive(true);
+            trophies.Add(trophy);
+        }
+
+        for (int i = 0; i < trophies.Count; i++)
+        {
+            if (trophies[i] != null)
+                trophies[i].gameObject.SetActive(i < visibleCount);
+        }
+    }
+
+    private static void SetCenterImage(Image image, Sprite sprite, bool active)
+    {
+        if (image == null)
+            return;
+
+        image.sprite = sprite;
+        image.gameObject.SetActive(active && sprite != null);
+    }
+
+    private void SetCenterImagesActive(bool active)
+    {
+        if (topCenterImage != null)
+            topCenterImage.gameObject.SetActive(active);
+
+        if (bottomCenterImage != null)
+            bottomCenterImage.gameObject.SetActive(active);
     }
 }

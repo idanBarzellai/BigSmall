@@ -46,6 +46,9 @@ private void BeginReadyPhase()
     mouseReady = false;
     waitingForReady = true;
 
+    if (gameUI != null)
+        gameUI.ShowReadyImages();
+
     elephant.SetReadyAnimation(false);
     mouse.SetReadyAnimation(false);
 

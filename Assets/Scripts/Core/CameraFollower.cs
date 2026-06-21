@@ -16,8 +16,8 @@ public sealed class CameraFollower : MonoBehaviour
     [SerializeField] private float loseBuffer = 1.5f;
 
     [Header("Shake")]
-[SerializeField] private float earthquakeShakeDuration = 0.4f;
-[SerializeField] private float earthquakeShakeStrength = 0.25f;
+[SerializeField] private float earthquakeShakeDuration = 0.2f;
+[SerializeField] private float earthquakeShakeStrength = 0.08f;
 
 private float shakeTimer;
 private float shakeStrength;
@@ -98,8 +98,12 @@ private void ApplyShake()
 
     shakeTimer -= Time.deltaTime;
 
+    float fade = Mathf.Clamp01(
+        shakeTimer / Mathf.Max(earthquakeShakeDuration, 0.01f)
+    );
+
     transform.position +=
-        (Vector3)(Random.insideUnitCircle * shakeStrength);
+        (Vector3)(Random.insideUnitCircle * shakeStrength * fade);
 }
 public void TriggerEarthquakeShake()
 {
