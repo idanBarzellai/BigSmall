@@ -167,6 +167,14 @@ public void PlayLoseAnimation()
 
 public void ResetAnimationForNewRound()
 {
+    ResetMomentum();
+    moveInput = 0f;
+    wasGrounded = false;
+    nextAllowedJumpTime = 0f;
+
+    if (rb != null)
+        rb.linearVelocity = Vector2.zero;
+
     if (image != null)
     {
         image.localScale = imageBaseScale;

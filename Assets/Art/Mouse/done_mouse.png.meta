@@ -1,0 +1,689 @@
+fileFormatVersion: 2
+guid: fd4cd2c7a270e574a81ecc66382f4414
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8185524426170070971
+    second: done_mouse_0
+  - first:
+      213: -7830368504803689929
+    second: done_mouse_1
+  - first:
+      213: -4708032345567553795
+    second: done_mouse_2
+  - first:
+      213: 7375707704755246308
+    second: done_mouse_3
+  - first:
+      213: -6772001470369560287
+    second: done_mouse_4
+  - first:
+      213: -6325446251812553816
+    second: done_mouse_5
+  - first:
+      213: 8500344274952615311
+    second: done_mouse_6
+  - first:
+      213: -5314125119375610947
+    second: done_mouse_7
+  - first:
+      213: -569181853733316035
+    second: done_mouse_8
+  - first:
+      213: -4401094203270585170
+    second: done_mouse_9
+  - first:
+      213: 7235878757090027146
+    second: done_mouse_10
+  - first:
+      213: 2110206719804150767
+    second: done_mouse_11
+  - first:
+      213: -382303671408296589
+    second: done_mouse_12
+  - first:
+      213: 6021547949411298900
+    second: done_mouse_13
+  - first:
+      213: 8783918164805873074
+    second: done_mouse_14
+  - first:
+      213: -4062568294119347405
+    second: done_mouse_15
+  - first:
+      213: -1407792967588904118
+    second: done_mouse_16
+  - first:
+      213: -4638353028532140719
+    second: done_mouse_17
+  - first:
+      213: -2630864326718632497
+    second: done_mouse_18
+  - first:
+      213: 262918980925479868
+    second: done_mouse_19
+  - first:
+      213: -2862382046464432105
+    second: done_mouse_20
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: done_mouse_0
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 563
+        width: 41
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54889d537ec276e80800000000000000
+      internalID: -8185524426170070971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_1
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 556
+        width: 47
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73af4caf451f45390800000000000000
+      internalID: -7830368504803689929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_2
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 494
+        width: 60
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df69563a685b9aeb0800000000000000
+      internalID: -4708032345567553795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_3
+      rect:
+        serializedVersion: 2
+        x: 238
+        y: 544
+        width: 32
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e45c0d4417cb5660800000000000000
+      internalID: 7375707704755246308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_4
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 477
+        width: 36
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1290334da840502a0800000000000000
+      internalID: -6772001470369560287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_5
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 516
+        width: 25
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8abf2eac5208738a0800000000000000
+      internalID: -6325446251812553816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_6
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 418
+        width: 41
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f857311d41a47f570800000000000000
+      internalID: 8500344274952615311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_7
+      rect:
+        serializedVersion: 2
+        x: 235
+        y: 448
+        width: 21
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbbe2affb5f6046b0800000000000000
+      internalID: -5314125119375610947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_8
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 458
+        width: 74
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3a90a3ae1cd918f0800000000000000
+      internalID: -569181853733316035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_9
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 367
+        width: 25
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea4a60fd32c2ce2c0800000000000000
+      internalID: -4401094203270585170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_10
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 375
+        width: 46
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a86652a64610b6460800000000000000
+      internalID: 7235878757090027146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_11
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 361
+        width: 80
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe39190d4d5f84d10800000000000000
+      internalID: 2110206719804150767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_12
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 358
+        width: 89
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37d716d16d8c1baf0800000000000000
+      internalID: -382303671408296589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_13
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 377
+        width: 36
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45e64aad4f5d09350800000000000000
+      internalID: 6021547949411298900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_14
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 394
+        width: 36
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bdea5d180fb6e970800000000000000
+      internalID: 8783918164805873074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_15
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 396
+        width: 25
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33b604139abde97c0800000000000000
+      internalID: -4062568294119347405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_16
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 397
+        width: 17
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a43029931c3867ce0800000000000000
+      internalID: -1407792967588904118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_17
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 377
+        width: 31
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1550c7fde7241afb0800000000000000
+      internalID: -4638353028532140719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_18
+      rect:
+        serializedVersion: 2
+        x: 523
+        y: 366
+        width: 44
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fcd40b175da4d7bd0800000000000000
+      internalID: -2630864326718632497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_19
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 357
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbb55ce8b6316a300800000000000000
+      internalID: 262918980925479868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: done_mouse_20
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 364
+        width: 33
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 718280db1b6c648d0800000000000000
+      internalID: -2862382046464432105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      done_mouse_0: -8185524426170070971
+      done_mouse_1: -7830368504803689929
+      done_mouse_10: 7235878757090027146
+      done_mouse_11: 2110206719804150767
+      done_mouse_12: -382303671408296589
+      done_mouse_13: 6021547949411298900
+      done_mouse_14: 8783918164805873074
+      done_mouse_15: -4062568294119347405
+      done_mouse_16: -1407792967588904118
+      done_mouse_17: -4638353028532140719
+      done_mouse_18: -2630864326718632497
+      done_mouse_19: 262918980925479868
+      done_mouse_2: -4708032345567553795
+      done_mouse_20: -2862382046464432105
+      done_mouse_3: 7375707704755246308
+      done_mouse_4: -6772001470369560287
+      done_mouse_5: -6325446251812553816
+      done_mouse_6: 8500344274952615311
+      done_mouse_7: -5314125119375610947
+      done_mouse_8: -569181853733316035
+      done_mouse_9: -4401094203270585170
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

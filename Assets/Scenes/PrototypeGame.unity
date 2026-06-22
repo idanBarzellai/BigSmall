@@ -336,10 +336,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23e41365146621e4a999724c25150072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ElephantVsMouse.Gameplay.Players.ElephantController
-  minMoveSpeed: 4
-  maxMoveSpeed: 9
+  minMoveSpeed: 3
+  maxMoveSpeed: 7
   obstacleRecoverySpeed: 0
-  accelerationRate: 1.5
+  accelerationRate: 2
   jumpForce: 12
   jumpCooldown: 0.2
   groundCheck: {fileID: 866451071}
@@ -836,6 +836,8 @@ MonoBehaviour:
   obstaclePrefab: {fileID: 154939573875440826, guid: ab83c4fdae049dc4092b0436462e5706, type: 3}
   elephantInteractionPointPrefab: {fileID: 4022152452518027932, guid: 0520e311622910244aa8813ae1a6441a, type: 3}
   mouseInteractionPointPrefab: {fileID: 4022152452518027932, guid: 7ff3e8871cd87a84e8db35d59f6646dc, type: 3}
+  elephantUsedInteractionSprite: {fileID: 21300000, guid: 3976713ff55223d4e9d50a075436738e, type: 3}
+  mouseUsedInteractionSprite: {fileID: 21300000, guid: fd4cd2c7a270e574a81ecc66382f4414, type: 3}
   birdAttackPrefab: {fileID: 227722709361368886, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
   elephant: {fileID: 430608963}
   mouse: {fileID: 1434177746}
@@ -1333,7 +1335,7 @@ MonoBehaviour:
   inputRouter: {fileID: 1667998893}
   animator: {fileID: 762271548}
   image: {fileID: 762271547}
-  birdCallLockDuration: 2
+  birdCallLockDuration: 1.5
 --- !u!50 &1434177748
 Rigidbody2D:
   serializedVersion: 5

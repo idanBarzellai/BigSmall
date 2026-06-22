@@ -24,6 +24,8 @@ public sealed class RoundGenerator : MonoBehaviour
     [SerializeField] private GameObject obstaclePrefab;
     [SerializeField] private GameObject elephantInteractionPointPrefab;
     [SerializeField] private GameObject mouseInteractionPointPrefab;
+    [SerializeField] private Sprite elephantUsedInteractionSprite;
+    [SerializeField] private Sprite mouseUsedInteractionSprite;
     [SerializeField] private GameObject birdAttackPrefab;
 [SerializeField] private ElephantController elephant;
 [SerializeField] private MouseController mouse;
@@ -290,8 +292,18 @@ private void CreateInteractionPair(float x, int index)
         mousePointObject.GetComponent<InteractionAccessPoint>() ??
         mousePointObject.AddComponent<InteractionAccessPoint>();
 
-    elephantPoint.Initialize(PlayerId.Elephant, controller, color);
-    mousePoint.Initialize(PlayerId.Mouse, controller, color);
+    elephantPoint.Initialize(
+        PlayerId.Elephant,
+        controller,
+        color,
+        elephantUsedInteractionSprite
+    );
+    mousePoint.Initialize(
+        PlayerId.Mouse,
+        controller,
+        color,
+        mouseUsedInteractionSprite
+    );
 
     controller.Initialize(elephantPoint, mousePoint);
 }

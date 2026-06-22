@@ -6,6 +6,7 @@ public sealed class InteractionAccessPoint : MonoBehaviour
     [SerializeField] private SharedInteractionController controller;
 
     private SpriteRenderer spriteRenderer;
+    private Sprite usedSprite;
     private bool consumed;
 
     private void Awake()
@@ -16,15 +17,17 @@ public sealed class InteractionAccessPoint : MonoBehaviour
     public void Initialize(
         PlayerId player,
         SharedInteractionController interactionController,
-        Color pointColor)
+        Color pointColor,
+        Sprite replacementSprite)
     {
         allowedPlayer = player;
         controller = interactionController;
+        usedSprite = replacementSprite;
         consumed = false;
 
         foreach (Collider2D col in GetComponentsInChildren<Collider2D>())
         {
-            if (col.gameObject == gameObject)
+            if (!col.isTrigger || col.gameObject == gameObject)
                 continue;
 
             InteractionTriggerRelay relay =
@@ -102,15 +105,20 @@ public sealed class InteractionAccessPoint : MonoBehaviour
     {
         consumed = true;
 
-        if (spriteRenderer != null)
+        if (spriteRenderer != null && usedSprite != null)
         {
             Color color = spriteRenderer.color;
-            color.a = 0f;
+            color.a = 1f;
             spriteRenderer.color = color;
+            spriteRenderer.sprite = usedSprite;
+            spriteRenderer.enabled = true;
         }
 
         foreach (Collider2D col in GetComponentsInChildren<Collider2D>())
-            col.enabled = false;
+        {
+            if (col.isTrigger)
+                col.enabled = false;
+        }
     }
 }
 
