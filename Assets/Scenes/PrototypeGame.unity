@@ -187,10 +187,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -248,7 +248,7 @@ Transform:
   m_GameObject: {fileID: 303580084}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.18675, y: 3.29636, z: 0}
+  m_LocalPosition: {x: 0, y: 200, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -268,6 +268,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScreenObscurer
   coverImage: {fileID: 1621294502}
+  frames:
+  - {fileID: 21300000, guid: a71b4e4bf3b6d004ca231b97f21d9c16, type: 3}
+  - {fileID: 21300000, guid: 8afc03de6260b164d9cf1b3d6a4639b2, type: 3}
+  - {fileID: 21300000, guid: 1a76afb7307c449488e208fd39326d66, type: 3}
+  - {fileID: 21300000, guid: 7f4629fbf2a486242b1ba2f8bca0e622, type: 3}
+  - {fileID: 21300000, guid: 9e3551ab5b4ee934c874c462ad178c0a, type: 3}
+  - {fileID: 21300000, guid: b42e141796cdc9e46baec0d109ceb927, type: 3}
+  - {fileID: 21300000, guid: b0542b92154e025439b7c8e2ce05cbdb, type: 3}
+  - {fileID: 21300000, guid: a58d7b08ee0acbf40a7e78474fcf216a, type: 3}
+  - {fileID: 21300000, guid: 966913b5f2ff81a4a9f926e1b433a12d, type: 3}
+  - {fileID: 21300000, guid: 6d8598b03eb46cc499f2a6a35d3a5a31, type: 3}
+  - {fileID: 21300000, guid: 44cb2815c1690fc449c8218067177a89, type: 3}
+  - {fileID: 21300000, guid: 8482293a51264244885a93b42b1c2b23, type: 3}
+  - {fileID: 21300000, guid: 749b3c07421cec746bf077613218e0b3, type: 3}
+  - {fileID: 21300000, guid: 5443d45b5d2af25408a4f59fd3a80149, type: 3}
+  - {fileID: 21300000, guid: c886442c8ee2fd840b91a6f46b4e0f37, type: 3}
+  - {fileID: 21300000, guid: e58e9223aea4d964e99021b368a29005, type: 3}
+  - {fileID: 21300000, guid: a58d7b08ee0acbf40a7e78474fcf216a, type: 3}
+  - {fileID: 21300000, guid: 966913b5f2ff81a4a9f926e1b433a12d, type: 3}
+  - {fileID: 21300000, guid: 6d8598b03eb46cc499f2a6a35d3a5a31, type: 3}
+  - {fileID: 21300000, guid: 44cb2815c1690fc449c8218067177a89, type: 3}
+  - {fileID: 21300000, guid: 8482293a51264244885a93b42b1c2b23, type: 3}
+  - {fileID: 21300000, guid: 749b3c07421cec746bf077613218e0b3, type: 3}
+  - {fileID: 21300000, guid: 5443d45b5d2af25408a4f59fd3a80149, type: 3}
+  - {fileID: 21300000, guid: c886442c8ee2fd840b91a6f46b4e0f37, type: 3}
+  - {fileID: 21300000, guid: e58e9223aea4d964e99021b368a29005, type: 3}
+  - {fileID: 21300000, guid: ad61f9db6baa07f44a05e0b12262d523, type: 3}
+  - {fileID: 21300000, guid: d06ea999ad5d8bb41894c2b5976b5d4a, type: 3}
+  - {fileID: 21300000, guid: c9a6d5b9fd7e3234984c567f84e38955, type: 3}
+  - {fileID: 21300000, guid: f0772c632efeaf44db60cb87147cca53, type: 3}
+  - {fileID: 21300000, guid: 63ac9933aabbeb24fb01cd7a1f4ad2b4, type: 3}
+  - {fileID: 21300000, guid: 5445d817c0a4b4346bc5429a294a572b, type: 3}
+  - {fileID: 21300000, guid: 71b7360638437e14481f9e063f491cba, type: 3}
+  framesPerSecond: 12
+  preserveAspect: 1
+  sequenceAnchoredPosition: {x: 0, y: 300}
   defaultDuration: 2.5
 --- !u!1 &430608961
 GameObject:
@@ -304,7 +340,7 @@ MonoBehaviour:
   maxMoveSpeed: 9
   obstacleRecoverySpeed: 0
   accelerationRate: 1.5
-  jumpForce: 10
+  jumpForce: 12
   jumpCooldown: 0.2
   groundCheck: {fileID: 866451071}
   groundCheckRadius: 0.15
@@ -434,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 057153a9a1afd194aacd8f6136737c3b, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -476,7 +512,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -515, y: -293}
+  m_AnchoredPosition: {x: -480, y: -332}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &693823819
@@ -798,7 +834,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoundGenerator
   groundPrefab: {fileID: 6765694975695644103, guid: e67df6b7459949d4a89c053f55409a86, type: 3}
   obstaclePrefab: {fileID: 154939573875440826, guid: ab83c4fdae049dc4092b0436462e5706, type: 3}
-  interactionAccessPointPrefab: {fileID: 6118158591806393863, guid: 8ef96d76f39ae084fbbf8b509ec1950d, type: 3}
+  elephantInteractionPointPrefab: {fileID: 4022152452518027932, guid: 0520e311622910244aa8813ae1a6441a, type: 3}
+  mouseInteractionPointPrefab: {fileID: 4022152452518027932, guid: 7ff3e8871cd87a84e8db35d59f6646dc, type: 3}
   birdAttackPrefab: {fileID: 227722709361368886, guid: ce35c1e7da7c38f449fb72390c5f199d, type: 3}
   elephant: {fileID: 430608963}
   mouse: {fileID: 1434177746}
@@ -831,7 +868,9 @@ MonoBehaviour:
   minimumInteractionPointCount: 5
   interactionSpawnChance: 0.5
   minDistanceFromObstacle: 2.5
-  obstacleY: 0.5
+  elephantInteractionHeightOffset: 0.5
+  mouseInteractionHeightOffset: 0
+  obstacleY: 1
   obstacleStartPadding: 10
   obstacleEndPadding: 10
   obstacleSegmentInnerPadding: 1
@@ -856,13 +895,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3e5377174c56a594e95f2ee574c32872, type: 3}
   - {fileID: 21300000, guid: cce86a3b84f884c46a38efe6a0dd0aac, type: 3}
   earthquakeFramesPerSecond: 12
-  mouseInteractionBlockPrefab: {fileID: 7354225502215736107, guid: dbf449e71edd2db49bdf017d9e3e358c, type: 3}
-  mouseInteractionRoomXOffset: 0.8
-  mouseInteractionRoomYOffset: 0.75
-  mouseInteractionBlockSpacing: 1
-  groundBuffer: -0.25
-  laneHeight: -1.3
-  mouseHeightBuffer: -0.5
+  groundBuffer: -0.1
+  laneHeight: -1.5
+  mouseHeightBuffer: -0.7
 --- !u!4 &772806741
 Transform:
   m_ObjectHideFlags: 0
@@ -1209,7 +1244,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 057153a9a1afd194aacd8f6136737c3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1297,7 +1332,7 @@ MonoBehaviour:
   moveSpeed: 5
   inputRouter: {fileID: 1667998893}
   animator: {fileID: 762271548}
-  image: {fileID: 0}
+  image: {fileID: 762271547}
   birdCallLockDuration: 2
 --- !u!50 &1434177748
 Rigidbody2D:
@@ -1334,7 +1369,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434177745}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.5, w: 0.8660254}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.935, y: -0.46, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
@@ -1342,7 +1377,7 @@ Transform:
   - {fileID: 762271547}
   - {fileID: 1812202160}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 60}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1621294500
 GameObject:
   m_ObjectHideFlags: 0
@@ -1370,8 +1405,8 @@ RectTransform:
   m_GameObject: {fileID: 1621294500}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 218108521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1773,7 +1808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 057153a9a1afd194aacd8f6136737c3b, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1815,7 +1850,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -533, y: 215}
+  m_AnchoredPosition: {x: -480, y: 208}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1660057539 &9223372036854775807

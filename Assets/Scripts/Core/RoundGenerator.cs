@@ -22,7 +22,8 @@ public sealed class RoundGenerator : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject groundPrefab;
     [SerializeField] private GameObject obstaclePrefab;
-    [SerializeField] private GameObject interactionAccessPointPrefab;
+    [SerializeField] private GameObject elephantInteractionPointPrefab;
+    [SerializeField] private GameObject mouseInteractionPointPrefab;
     [SerializeField] private GameObject birdAttackPrefab;
 [SerializeField] private ElephantController elephant;
 [SerializeField] private MouseController mouse;
@@ -52,6 +53,10 @@ public sealed class RoundGenerator : MonoBehaviour
 [SerializeField] private float interactionSpawnChance = 0.5f;
 [SerializeField] private float minDistanceFromObstacle = 2.5f;
 
+[Header("Interaction Point Placement")]
+[SerializeField] private float elephantInteractionHeightOffset;
+[SerializeField] private float mouseInteractionHeightOffset;
+
     [Header("Elephant Obstacle Placement")]
 [SerializeField] private float obstacleY = 1.05f;
 [SerializeField] private float obstacleStartPadding = 10f;
@@ -65,12 +70,6 @@ public sealed class RoundGenerator : MonoBehaviour
 [Header("Earthquake Sprite Animation")]
 [SerializeField] private Sprite[] earthquakeAnimationFrames;
 [SerializeField] private float earthquakeFramesPerSecond = 12f;
-
-[Header("Mouse Interaction Dead Ends")]
-[SerializeField] private GameObject mouseInteractionBlockPrefab;
-[SerializeField] private float mouseInteractionRoomXOffset = 0.8f;
-[SerializeField] private float mouseInteractionRoomYOffset = 0.75f;
-[SerializeField] private float mouseInteractionBlockSpacing = 0.45f;
 
 [Header("Mouse Maze Layout")]
 [SerializeField] private float groundBuffer = -0.25f;
@@ -127,7 +126,7 @@ obstacleXs.Clear();
         mouseTopLaneY = groundBuffer  + mouseHeightBuffer + laneHeight / 2f;
         mouseMiddleLaneY = mouseTopLaneY + mouseHeightBuffer + laneHeight;
         mouseBottomLaneY = mouseMiddleLaneY  + mouseHeightBuffer + laneHeight;
-        bottomBoundaryY = -8f;
+        bottomBoundaryY = -9f;
         topMiddleConnectorY = mouseTopLaneY +  laneHeight / 2f + mouseHeightBuffer /2f;
         middleBottomConnectorY = mouseMiddleLaneY  +  laneHeight / 2f + mouseHeightBuffer /2f;
     }
@@ -268,48 +267,28 @@ private void CreateInteractionPair(float x, int index)
     spawnedObjects.Add(controllerObject);
 
     GameObject elephantPointObject = Spawn(
-        interactionAccessPointPrefab,
-        new Vector3(x, 0.85f, 0f)
+        elephantInteractionPointPrefab,
+        new Vector3(x, 0.85f + elephantInteractionHeightOffset, 0f)
     );
 
     Vector3 mouseInteractionPosition = new Vector3(
         x,
-        groundBuffer + mouseHeightBuffer,
+        groundBuffer + mouseHeightBuffer + mouseInteractionHeightOffset,
         0f
     );
 
     GameObject mousePointObject = Spawn(
-        interactionAccessPointPrefab,
+        mouseInteractionPointPrefab,
         mouseInteractionPosition
     );
 
-    Spawn(
-        mouseInteractionBlockPrefab != null
-            ? mouseInteractionBlockPrefab
-            : mazeWallPrefab,
-        new Vector3(
-            mouseInteractionPosition.x - mouseInteractionBlockSpacing,
-            mouseInteractionPosition.y,
-            0f
-        )
-    );
-
-    Spawn(
-        mouseInteractionBlockPrefab != null
-            ? mouseInteractionBlockPrefab
-            : mazeWallPrefab,
-        new Vector3(
-            mouseInteractionPosition.x + mouseInteractionBlockSpacing,
-            mouseInteractionPosition.y,
-            0f
-        )
-    );
-
     InteractionAccessPoint elephantPoint =
-        elephantPointObject.GetComponent<InteractionAccessPoint>();
+        elephantPointObject.GetComponent<InteractionAccessPoint>() ??
+        elephantPointObject.AddComponent<InteractionAccessPoint>();
 
     InteractionAccessPoint mousePoint =
-        mousePointObject.GetComponent<InteractionAccessPoint>();
+        mousePointObject.GetComponent<InteractionAccessPoint>() ??
+        mousePointObject.AddComponent<InteractionAccessPoint>();
 
     elephantPoint.Initialize(PlayerId.Elephant, controller, color);
     mousePoint.Initialize(PlayerId.Mouse, controller, color);
