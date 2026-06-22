@@ -31,6 +31,7 @@ public sealed class BirdAttackActor : MonoBehaviour
 
     private void Start()
     {
+        AudioManager.Play(GameSound.BirdFlying);
         StartCoroutine(FlyRoutine());
     }
 

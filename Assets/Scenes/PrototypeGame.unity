@@ -970,6 +970,7 @@ GameObject:
   m_Component:
   - component: {fileID: 813037606}
   - component: {fileID: 813037607}
+  - component: {fileID: 813037608}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1014,6 +1015,38 @@ MonoBehaviour:
   mouseStartPosition: {x: -5, y: -2, z: 0}
   inputRouter: {fileID: 1667998893}
   roundEndDelay: 4
+  winnerScaleMultiplier: 2
+--- !u!114 &813037608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813037605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c1a8642ef4aabb9ab1d7e4a13d287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  backgroundMusic: {fileID: 8300000, guid: 8d4098a7129176649bed6c7ae6f00ad3, type: 3}
+  musicVolume: 0.3
+  gameStartSfx: {fileID: 8300000, guid: acf06e4656702df4e8cce7bc3d1ff42c, type: 3}
+  gameStartVolume: 0.3
+  gameStartFadeDuration: 1
+  mouseReadySfx: {fileID: 8300000, guid: 0eff22869f4b41b4099746cbdd0a283c, type: 3}
+  elephantReadySfx: {fileID: 8300000, guid: 0eff22869f4b41b4099746cbdd0a283c, type: 3}
+  countdownSfx: {fileID: 8300000, guid: 39e23192930b8554c837057e408a4be9, type: 3}
+  elephantOuchSfx: {fileID: 8300000, guid: 254d2223b7c889c4b8a8896ed61ca6e5, type: 3}
+  elephantJumpSfx: {fileID: 8300000, guid: 55084f4537dc7cf47bc0fb45ecc82df2, type: 3}
+  earthquakeSfx: {fileID: 8300000, guid: e5373ddfa0d004d4ea28d11a09a8dd98, type: 3}
+  mouseBirdCallSfx: {fileID: 8300000, guid: 22c609f5726d8c34fb50a755608fc485, type: 3}
+  birdFlyingSfx: {fileID: 8300000, guid: e1ae6219f72a82646a0fa6e1069e43e4, type: 3}
+  eggHitSfx: {fileID: 8300000, guid: 4e22d038bbf0d4b4b9260607018dec5c, type: 3}
+  finishLineSfx: {fileID: 0}
+  elephantWinSfx: {fileID: 8300000, guid: 34392c50aff17c64ab112f3378a6f670, type: 3}
+  mouseWinSfx: {fileID: 8300000, guid: 570816b8fb23c2b4096d2b51afea7681, type: 3}
+  matchWinSfx: {fileID: 8300000, guid: 775d399842118144aa039e1cee806e29, type: 3}
+  sfxVolume: 1
 --- !u!1 &866451070
 GameObject:
   m_ObjectHideFlags: 0

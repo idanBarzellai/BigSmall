@@ -59,4 +59,9 @@ public bool IsElephantReadyPressed()
            Input.GetKeyDown(KeyCode.W) ||
            Input.GetKeyDown(KeyCode.D);
 }
+
+public bool IsRestartPressed()
+{
+    return Input.GetKeyDown(KeyCode.Space);
+}
     }

@@ -20,6 +20,8 @@ public sealed class EggDropActor : MonoBehaviour
 
         if (transform.position.y <= targetY)
         {
+            AudioManager.Play(GameSound.EggHit);
+
             if (screenObscurer != null)
                 screenObscurer.Obscure(obscureDuration);
 

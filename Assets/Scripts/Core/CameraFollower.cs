@@ -21,6 +21,7 @@ public sealed class CameraFollower : MonoBehaviour
 
 private float shakeTimer;
 private float shakeStrength;
+private Transform matchWinnerTarget;
 
 
     private Camera cam;
@@ -35,6 +36,17 @@ private float shakeStrength;
     {
         if (elephant == null || mouse == null || raceManager == null)
             return;
+
+        if (matchWinnerTarget != null)
+        {
+            Vector3 winnerPosition = matchWinnerTarget.position;
+            transform.position = new Vector3(
+                winnerPosition.x,
+                winnerPosition.y,
+                transform.position.z
+            );
+            return;
+        }
 
         FollowLeader();
 ApplyShake();
@@ -81,6 +93,7 @@ CheckOffscreenLoss();
 
     public void ResetForNewRound()
     {
+        matchWinnerTarget = null;
         hasRegisteredOffscreenLoss = false;
 
         if (elephant != null && mouse != null)
@@ -88,6 +101,11 @@ CheckOffscreenLoss();
             float startX = Mathf.Max(elephant.position.x, mouse.position.x);
             transform.position = new Vector3(startX, verticalCenter, transform.position.z);
         }
+    }
+
+    public void FocusOnMatchWinner(Transform winner)
+    {
+        matchWinnerTarget = winner;
     }
 
 

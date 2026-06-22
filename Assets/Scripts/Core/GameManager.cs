@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public sealed class GameManager : MonoBehaviour
 {
@@ -19,20 +20,29 @@ public sealed class GameManager : MonoBehaviour
 [Header("Round End")]
 [SerializeField] private float roundEndDelay = 3f;
 
+[Header("Match End")]
+[SerializeField, Min(1f)] private float winnerScaleMultiplier = 2f;
+
 private bool elephantReady;
 private bool mouseReady;
 private bool waitingForReady;
     private bool matchEnded;
+    private Vector3 elephantBaseScale;
+    private Vector3 mouseBaseScale;
+    private readonly List<(Renderer renderer, bool wasEnabled)>
+        hiddenWorldRenderers = new();
 
     private void Awake()
     {
         raceManager.RoundEnded += HandleRoundEnded;
         raceManager.MatchEnded += HandleMatchEnded;
+        elephantBaseScale = elephant.transform.localScale;
+        mouseBaseScale = mouse.transform.localScale;
     }
 
     private void Start()
     {
-    PrepareNewMatch();
+        PrepareNewMatch();
     }
 
 private void PrepareNewMatch()
@@ -42,6 +52,9 @@ private void PrepareNewMatch()
 }
 private void BeginReadyPhase()
 {
+    AudioManager.PrepareForReadyPhase();
+    AudioManager.Play(GameSound.GameStart);
+
     elephantReady = false;
     mouseReady = false;
     waitingForReady = true;
@@ -58,6 +71,14 @@ private void BeginReadyPhase()
 
 private void Update()
 {
+    if (matchEnded)
+    {
+        if (inputRouter != null && inputRouter.IsRestartPressed())
+            RestartMatch();
+
+        return;
+    }
+
     if (!waitingForReady)
         return;
 
@@ -65,12 +86,14 @@ private void Update()
     {
         mouseReady = true;
         mouse.SetReadyAnimation(true);
+        AudioManager.Play(GameSound.MouseReady);
     }
 
     if (!elephantReady && inputRouter.IsElephantReadyPressed())
     {
         elephantReady = true;
         elephant.SetReadyAnimation(true);
+        AudioManager.Play(GameSound.ElephantReady);
     }
 
     if (mouseReady && elephantReady)
@@ -82,11 +105,16 @@ private void Update()
 
 private IEnumerator StartPreparedRoundWithCountdown()
 {
+    AudioManager.FadeOutGameStart();
+
     if (gameUI != null)
     {
         gameUI.ClearMessage();
+        AudioManager.Play(GameSound.Countdown);
         yield return gameUI.ShowCountdown();
     }
+
+    AudioManager.StartBackgroundMusic();
 
     raceManager.StartNewRound();
 
@@ -104,6 +132,7 @@ private IEnumerator StartPreparedRoundWithCountdown()
 
 private void GenerateAndPrepareRound()
 {
+    AudioManager.StopBackgroundMusic();
     roundGenerator.GenerateRound();
 
     elephant.transform.position = elephantStartPosition;
@@ -130,11 +159,13 @@ private IEnumerator RoundEndRoutine(PlayerId winner)
 
     if (winner == PlayerId.Elephant)
     {
+        AudioManager.Play(GameSound.ElephantWin);
         elephant.PlayWinAnimation();
         mouse.PlayLoseAnimation();
     }
     else
     {
+        AudioManager.Play(GameSound.MouseWin);
         mouse.PlayWinAnimation();
         elephant.PlayLoseAnimation();
     }
@@ -147,21 +178,83 @@ private IEnumerator RoundEndRoutine(PlayerId winner)
 
  private void HandleMatchEnded(PlayerId winner)
 {
+    if (matchEnded)
+        return;
+
+    matchEnded = true;
+    waitingForReady = false;
+    AudioManager.Play(GameSound.MatchWin);
+
+    Transform winnerTransform;
+
      if (winner == PlayerId.Elephant)
-    {
+     {
         elephant.PlayWinAnimation();
         mouse.PlayLoseAnimation();
+        winnerTransform = elephant.transform;
     }
     else
     {
         mouse.PlayWinAnimation();
         elephant.PlayLoseAnimation();
+        winnerTransform = mouse.transform;
     }
 
     elephant.SetCanMove(false);
     mouse.SetCanMove(false);
 
-    matchEnded = true;
+    winnerTransform.localScale = Vector3.Scale(
+        winnerTransform.localScale,
+        Vector3.one * winnerScaleMultiplier
+    );
+
+    if (cameraFollower != null)
+        cameraFollower.FocusOnMatchWinner(winnerTransform);
+
+    HideWorldExcept(winnerTransform);
+    AudioManager.StopBackgroundMusic();
+}
+
+private void RestartMatch()
+{
+    RestoreWorldRenderers();
+    matchEnded = false;
+    elephant.transform.localScale = elephantBaseScale;
+    mouse.transform.localScale = mouseBaseScale;
+
+    raceManager.ResetMatch();
+    AudioManager.ResetForNewMatch();
+    GenerateAndPrepareRound();
+    BeginReadyPhase();
+}
+
+private void HideWorldExcept(Transform winner)
+{
+    hiddenWorldRenderers.Clear();
+
+    foreach (Renderer renderer in FindObjectsByType<Renderer>())
+    {
+        if (renderer == null ||
+            renderer.transform == winner ||
+            renderer.transform.IsChildOf(winner))
+        {
+            continue;
+        }
+
+        hiddenWorldRenderers.Add((renderer, renderer.enabled));
+        renderer.enabled = false;
+    }
+}
+
+private void RestoreWorldRenderers()
+{
+    foreach ((Renderer renderer, bool wasEnabled) in hiddenWorldRenderers)
+    {
+        if (renderer != null)
+            renderer.enabled = wasEnabled;
+    }
+
+    hiddenWorldRenderers.Clear();
 }
 
 

@@ -58,6 +58,7 @@ Transform mouseTransform)
     private void TriggerEarthquake()
 {
     Debug.Log("EARTHQUAKE!");
+    AudioManager.Play(GameSound.Earthquake);
 
     if (roundGenerator != null && mouse != null)
     {
@@ -69,7 +70,10 @@ Transform mouseTransform)
 {
     MouseController mouseController = mouse.GetComponent<MouseController>();
 if (mouseController != null)
+{
     mouseController.PlayBirdCallAnimation();
+    AudioManager.Play(GameSound.MouseBirdCall);
+}
     Debug.Log("BIRD ATTACK!");
 
     if (birdAttackPrefab == null)

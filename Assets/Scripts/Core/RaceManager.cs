@@ -30,11 +30,17 @@ public sealed class RaceManager : MonoBehaviour
 
     public void StartNewMatch()
     {
+        ResetMatch();
+        StartNewRound();
+    }
+
+    public void ResetMatch()
+    {
         ElephantWins = 0;
         MouseWins = 0;
         CurrentRound = 0;
-
-        StartNewRound();
+        hasRoundWinner = false;
+        IsRoundActive = false;
         ScoreChanged?.Invoke();
     }
 

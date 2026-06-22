@@ -16,12 +16,16 @@ public sealed class FinishLine : MonoBehaviour
 
         if (other.GetComponentInParent<ElephantController>() != null)
         {
+            AudioManager.Play(GameSound.FinishLine);
             raceManager.RegisterWinner(PlayerId.Elephant);
             return;
         }
 
         if (other.GetComponentInParent<MouseController>() != null)
+        {
+            AudioManager.Play(GameSound.FinishLine);
             raceManager.RegisterWinner(PlayerId.Mouse);
+        }
     }
 
     public void SetRaceManager(RaceManager manager)
